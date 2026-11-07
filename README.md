@@ -1,170 +1,200 @@
-# -cps-card-magic
-Cyber Physical Systems project: an interactive card magic machine using Arduino, Processing and Wekinator.
+# CPS Card Magic
 
 Cyber Physical Systems — Group 13
-Team: Group 13
 
-### 1. Project overview
+An interactive card-handling prototype using an Arduino Uno R3, an L293D
+motor driver, two DC motors, Processing, a camera and Wekinator.
 
-Our project is a card shuffling machine that enables a participant to select a random playing card, have it lost in the pack, then the machine can successfully tell you what the card is. We chose this concept because magic is great and so is technology!
+## Project status
 
-The intended interaction is:
-1. The participant presses S on the computer keyboard
-2. The machine then has both DC motors rotate the gearboxes, causing the cards to shuffle into the box
-3. The participant takes the cards out and begins dealing the cards face down, they stop when they want and look at the card they just dealt. They place the rest of the cards on top. These cards are then placed on the right side of the machine.
-4. The participant is instructed to press D on the computer keyboard
-5. The right hand side motor deals the cards down 1 at a time, until it stops at their chosen card
+The current prototype can:
 
+- run both motors in a staggered shuffle sequence;
+- deal cards with timed pulses from the left motor;
+- sample a live camera image into 400 brightness features;
+- use a two-class Wekinator classifier to decide when the target has been
+  detected;
+- run three complete target pulses after detection, then stop; and
+- stop automatically if Processing stops sending a heartbeat.
 
-The final prototype successfully demonstrated finding the final card. Its current limitations are it may not always accurately deal one at a time, and the camera recognition software is limited in training data
+The classifier does **not** identify all 52 card ranks and suits. In the current
+software, class 1 means continue scanning and class 2 means the target has been
+detected. The team should document how the physical target card or marker is
+prepared before final submission.
 
-Evidence: [Overall photograph and demonstration video.]
+## Repository structure
 
-### 2. Mechanical design
+```text
+arduino/TwoDC/TwoDC.ino
+processing/ExternalCamera_Control_v2/ExternalCamera_Control_v2.pde
+processing/ExternalCamera_Control_v2/sketch.properties
+wekinator/WekinatorProject/WekinatorProject.wekproj
+wekinator/WekinatorProject/inputConfig.xml
+wekinator/WekinatorProject/outputConfig.xml
+wekinator/WekinatorProject/current/currentData.arff
+```
 
-The mechanism consists of an existing commercial card shuffling machine from Amazon connected to an arduino with a breadboard. We chose this because of the time constraint of the project and ensuring the accuracy of dealing cards to the table.
+## Interaction
 
-We modified the supplied card shuffling machine by feeding the motor wiring to a breadboard connected to an L293D driver and an Arduino. This enabled the machine to be controlled and change the rate at which the motor would spin.
+1. Start Arduino, Wekinator and the Processing sketch as described below.
+2. Confirm the correct live camera view by pressing `C` in Processing.
+3. Press `S` to start shuffling. Motor 1 starts immediately and motor 2 starts
+   600 ms later. Press `X` before beginning another mode.
+4. After the participant has selected and replaced the card, move the pack to
+   the dealing side of the machine.
+5. Press `D` to scan and deal. Motor 1 runs for 80 ms and pauses for 1000 ms.
+6. When Wekinator outputs class 2, Arduino completes the pulse already in
+   progress without counting it, then runs three new complete 80 ms pulses and
+   stops.
+7. Press `X` or `Esc` at any time to request an immediate stop.
 
-During development, cards weren't dealing from the gearbox. We changed the rate at which it would be dealt, which resulted in the cards dealing efficiently one by one.
+`T` simulates a class-2 detection during scanning and is intended for testing.
 
-Evidence to include:
-- Labelled photograph of the complete mechanism.
-- CAD, sketch or dimensions needed to understand the construction.
+## Hardware
 
-### 3. Hardware and power
+### Components
 
-Components:
+| Component | Role |
+|---|---|
+| Arduino Uno R3 | Receives serial commands and controls the motor driver |
+| L293D | Drives two DC motors from Arduino control signals |
+| Two DC motors | Shuffle and deal cards |
+| External camera | Captures the card area for classification |
+| Computer | Runs Processing and Wekinator |
+| External motor supply | Powers the motors; final rating must be documented |
 
-| Component | Purpose | Why it was chosen |
-|---|---|---|
-| Arduino Uno | Receives commands from Processing and controls the motors through the motor driver. | Supports digital outputs and PWM for controlling motor direction, speed and timing. |
-| [Camera model] | Captures images of playing cards for recognition. | Provides visual input without physical contact with the cards. |
-| Two DC motors | Drive the card handling mechanism during shuffling and dealing. | Continuous rotation drives the rollers that move the cards. |
-| L293D motor driver | Controls the DC motors using a separate motor supply. | Supports two DC motors with direction and speed control. |
-| [Final power supply and voltage] | Powers the motors. | [Explain why it meets the motors' voltage and current requirements.] |
-| USB connection | Powers the Arduino and provides serial communication with the computer. | Allows Processing to send commands to the Arduino. |
-| Breadboard and jumper wires | Connect the circuit components. | Allow connections to be modified during prototyping. |
-
-Connections:
-
-The Arduino sends control signals to the L293D. The motors connect to the driver's outputs rather than directly to the Arduino pins.
-
-The initial single-motor test used the following connections. These must be checked against the final circuit.
+### Arduino pin assignments
 
 | Arduino pin | Connection | Function |
 |---|---|---|
-| 5 | L293D enable input for motor 1 | PWM speed control |
-| 4 | L293D direction input for motor 1 | Direction control |
-| 3 | L293D second direction input for motor 1 | Direction control |
-| [Confirm pins] | L293D inputs and enable for motor 2 | Second motor control |
-| GND | Common circuit ground | Shared reference for control signals |
+| 5 | L293D enable for motor 1 | PWM speed control |
+| 4 | L293D input 1 for motor 1 | Direction control |
+| 3 | L293D input 2 for motor 1 | Direction control |
+| 6 | L293D enable for motor 2 | PWM speed control |
+| 7 | L293D input 1 for motor 2 | Direction control |
+| 8 | L293D input 2 for motor 2 | Direction control |
+| GND | Arduino, L293D and motor-supply ground | Common reference |
 
-[Add a labelled wiring diagram showing the final pin assignments, both motors, logic supply, motor supply and ground connections.]
+Motor 1 is identified in the firmware as the physical left motor. Both motors
+currently use full PWM (`255`). The yellow power-board bridge must be removed,
+as noted in the firmware comments.
 
-Power Arrangement:
+Before final submission, add a labelled wiring diagram and confirm:
 
-The Arduino is powered through its USB connection to the computer. The motors are powered by 5V through an L293D motor driver.
+- the camera make and model;
+- motor part numbers or rated voltage;
+- motor-supply voltage and current rating;
+- L293D logic and motor-supply connections; and
+- the actual common-ground and power-safety arrangement.
 
-The Arduino provides control signals, while the motor supply provides the current required to drive the motors.
+## Software and communication
 
-[Confirm the common ground connections between the Arduino, motor driver and motor supply. State how the L293D logic supply is connected.]
+```text
+Camera
+  -> Processing: 20 x 20 brightness samples every 100 ms
+  -> Wekinator: OSC /wek/inputs, UDP port 6448, 400 floats
+  -> Processing: OSC /wek/outputs, UDP port 12000, class 1 or 2
+  -> Arduino: 9600-baud serial commands
+  -> L293D and two DC motors
+```
 
-[Describe the precautions actually implemented, including polarity checks, protection against short circuits and disconnecting power before changing connections.]
+### Serial protocol
 
-**Hardware Development**
+| Command | Meaning |
+|---|---|
+| `S` | Start staggered two-motor shuffle |
+| `D` | Start pulsed deal/scan mode |
+| `T` | Latch target detection while scanning |
+| `X` | Stop both motors and reset state |
+| `H` | Processing heartbeat |
+| `?` | Request the Arduino ready message |
 
-During initial testing, a motor moved the cards effectively when connected directly to a 9 V battery, but produced weaker movement through the L293D circuit.
+The Arduino stops both motors if it receives no heartbeat for 3000 ms while a
+mode is active. It reports state using messages including `READY`, `SHUFFLING`,
+`SCANNING`, `TARGET_LATCHED`, `TARGET_PULSE`, `TARGET_DONE`, `STOPPED`, `BUSY`
+and `FAULT LINK_TIMEOUT`.
 
-We explored changes to the motor control code, including PWM settings and timed on/off operation. Possible contributing factors included voltage loss through the driver, battery limitations and mechanical resistance; these were not confirmed by measurement.
+## Machine learning
 
-[Describe the final change and observed result, or explain the remaining limitation.]
-[Arduino model]	[Role]	[Reason]
-[Camera]	[Role]	[Reason]
-[Motor/servo and quantity]	[Role]	[Reason]
-[Motor driver]	[Role]	[Reason]
-[Power supply]	[Role]	[Reason]
+Processing samples the brightness at the centre of each cell in a 20 by 20
+grid, producing 400 numeric inputs. It sends a new feature vector every 100 ms.
 
+The included Wekinator project is configured as a two-class classification
+task:
 
-Connections: [Include a labelled wiring diagram and pin assignments.]
+| Output | Behaviour in the controller |
+|---|---|
+| Class 1 | Continue scanning |
+| Class 2 | Notify Arduino that the target was detected |
 
-Power arrangement: [State the actual supply voltages, which components they power, grounding arrangement and precautions implemented. Explain how motors are powered and controlled.]
+The included ARFF dataset contains 605 labelled recordings: 305 class-1
+examples and 300 class-2 examples. The repository does not contain an
+independent test set or measured accuracy. Before final submission, record the
+lighting, camera position, target-card definition, training procedure and a
+test result using previously unseen examples.
 
-Hardware development: [Describe one significant issue, what you tried and the outcome.]
+## Setup
 
-### 4. Software and communication
+### 1. Arduino
 
-The software pipeline is:
+1. Open `arduino/TwoDC/TwoDC.ino` in Arduino IDE.
+2. Select **Arduino Uno** and the correct USB port.
+3. Confirm that the wiring matches the pin table and that the power-board bridge
+   is removed.
+4. Upload the sketch and close Serial Monitor.
 
-Webcam → Wekinator → Processing → Arduino → Motor 1
+### 2. Processing
 
-Stage	What it receives and does	What it sends
+Install the Processing **Video**, **oscP5** and **Serial** libraries.
 
-Input program	[Camera data and feature extraction]	[Features, destination and protocol]
-Wekinator	[Inputs and model task]	[Output labels/values and destination]
-Processing	[Interprets output and controls sequence]	[Serial commands]
-Arduino	[Reads commands]	[Motor/servo control signals]
+Open
+`processing/ExternalCamera_Control_v2/ExternalCamera_Control_v2.pde`, then edit
+these user settings if required:
 
-Our additions to the supplied example code were [specific changes]. These enabled [behaviour].
+```java
+final String ARDUINO_PORT = "/dev/cu.usbmodem11201";
+final int CAMERA_INDEX = 1;
+```
 
-Communication settings: [OSC addresses/ports, serial baud rate and command meanings.]
+`ARDUINO_PORT` is specific to the computer and USB connection. Run the sketch
+once and use the printed `Serial.list()` output to find the correct value. If
+the preview shows the wrong camera, change `CAMERA_INDEX`.
 
-Source files: [Link every relevant sketch, input program and Wekinator project.]
+The camera capture string uses macOS AVFoundation. A different capture
+configuration may be required on Windows or Linux.
 
-### 5. Machine learning
+### 3. Wekinator
 
-Task: The model was trained to identify a black playing card amongst normal playing cards.
+1. Open `wekinator/WekinatorProject/WekinatorProject.wekproj`.
+2. Confirm 400 inputs on `/wek/inputs`, receiving on port 6448.
+3. Confirm one two-class output on `/wek/outputs`, sent to port 12000.
+4. Train the model from the included data if the saved model is not available.
+5. Enable **Run** so predictions are sent to Processing.
 
-Inputs: [What numerical features enter Wekinator, how they are produced and how many there are.]
+### 4. Run and stop
 
-Outputs: [Classes or continuous outputs, including their meaning.]
+Start Wekinator, then run Processing. Wait for the Arduino ready message and a
+live camera preview. Press `C` to confirm the camera before using `D`.
 
-Training data: We collected [number of examples per class or training recordings] under [lighting, camera position, card orientation and other conditions]. Training labels were assigned by [method].
+To shut down, press `X`, disable Wekinator Run, stop Processing, disconnect the
+external motor supply, and then disconnect Arduino USB.
 
-Model choice: We used [actual model/algorithm] because [reason it suited the task].
+## Known limitations and required evidence
 
-Testing: We tested using [new examples not used for training and testing procedure]. We observed [actual results; give counts if recorded].
+- The camera classifier depends on the training view, lighting and card
+  position.
+- The motor mechanism may not always release exactly one card per pulse.
+- The serial port and camera index are currently configured manually.
+- The dataset is balanced, but no held-out accuracy measurement is included.
+- Add a labelled mechanism photograph, final wiring diagram, demonstration
+  video and a short table of mechanical, electrical and recognition tests.
 
-Limitations and improvements: The model struggled with [observed conditions]. Improvements could include [more varied training data] and [alternative model or input approach], because [expected benefit].
+## Credits and references
 
-### 6. Testing and iteration
+- Albert Phillips — contribution to be completed by the team.
+- Junzhe (Christina) Ren — contribution to be completed by the team.
+- Robbie Stevens — adapted the commercial card-shuffling mechanism and
+  developed the initial motor-control code.
 
-Test or problem	Change made	Observed result
-[Mechanical issue]	[Change]	[Outcome]
-[Hardware issue]	[Change]	[Outcome]
-[Recognition issue]	[Change]	[Outcome]
-[Complete interaction test]	[Change, if any]	[Outcome]
-
-The final system can [confirmed capabilities]. Further development would focus on [highest-priority improvement].
-
-### 7. Setup and operation
-
-1. **Install the software.** Install Arduino IDE, Processing and Wekinator. In Processing, install the **oscP5** library for OSC communication. The **Serial** library provides communication with the Arduino. Record the software versions used in the final build: **[versions]**.
-
-2. **Connect the hardware.** With the power disconnected, connect the two DC motors to the L293D motor driver using the wiring diagram in Section 3. Connect the Arduino to the computer by USB. Connect the power supply board to a power supply. Connect the external motor supply and ensure the Arduino and motor driver share a common ground. Connect the webcam via usb to the computer. Keep the card mechanism clear before switching on the motor power supply board.
-
-3. **Upload the Arduino code.** Open **[Arduino sketch filename]** in Arduino IDE. Select **Arduino Uno** and its USB port under **Tools → Board** and **Tools → Port**, then upload the sketch. Close Serial Monitor before running Processing so that the serial port is available.
-
-4. **Open the recognition and control programs.** Open the camera input program, the saved Wekinator project **[project name]**, and the Processing control sketch **[filename]**. Allow access to the camera if requested.
-
-5. **Configure communication.** Set the Processing serial connection to the Arduino’s actual USB port and use a baud rate of **9600**, matching the Arduino sketch. Match the OSC ports and message addresses between the camera program, Wekinator and Processing. Use the input count and output settings saved with the trained Wekinator project. **[Add the final OSC ports, addresses and input/output counts here.]**
-
-6. **Start the system.** After uploading the Arduino sketch, start the camera input program, open the trained Wekinator project, then run the Processing control sketch. Enable **Run** in Wekinator to send live predictions. Check that the camera image and recognition output respond before operating the motors.
-
-7. **Operate the system.** Click the Processing window so that it receives keyboard input. The intended controls are:
-   - **S:** run both motors to shuffle the cards.
-   - **D:** start the dealing sequence.
-   - **X:** stop both motors.
-
-   Present cards clearly to the camera for recognition. **Verify these controls against the final code before submission.**
-
-8. **Stop the system.** Press **X** and confirm that both motors stop. Disable **Run** in Wekinator, then stop the Processing and camera programs. Disconnect the external motor supply before adjusting the mechanism or wiring, then disconnect the Arduino USB cable.
-Troubleshooting: [Two or three likely problems and their fixes.]
-
-### 8. Credits and references
-
-- Albert Phillips: 
-- Junzhe (Christina) Ren: 
-- Robbie Stevens: Adapted the existing card shuffling machine and developed the initial code to make the motors work.
-
-- Adapted code/resources: [Links and what you used.]
+Add links and licences for any adapted code, hardware designs, libraries and
+external references before final submission.
