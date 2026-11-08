@@ -61,7 +61,7 @@ wekinator/WekinatorProject/current/currentData.arff
 | Two DC motors | Shuffle and deal cards |
 | External camera | Captures the card area for classification |
 | Computer | Runs Processing and Wekinator |
-| External motor supply | Powers the motors; final rating must be documented |
+| School-provided power bank and power board | Supply the motor-power path; exact output ratings remain to be confirmed |
 
 ### Arduino pin assignments
 
@@ -79,13 +79,30 @@ Motor 1 is identified in the firmware as the physical left motor. Both motors
 currently use full PWM (`255`). The yellow power-board bridge must be removed,
 as noted in the firmware comments.
 
-Before final submission, add a labelled wiring diagram and confirm:
+### Circuit diagram and power supply
+
+![Simulator wiring diagram for the two-DC prototype](docs/images/two-dc-circuit.png)
+
+**Simulation placeholder:** The 9 V battery shown in the simulator represents
+the school-provided power bank and power board, which were unavailable in the
+simulator's component library. It is not the power source used in the physical
+prototype, does not establish its actual supply voltage, and is not a
+recommendation to power the motors from a 9 V battery.
+
+The physical prototype uses a school-provided power bank and power board.
+Their make/model, output voltage and current rating have not yet been supplied.
+The diagram documents the intended wiring; it is not a photograph or an
+electrical measurement of the assembled prototype.
+
+See [Circuit wiring and power-supply notes](docs/circuit-and-power.md) for the
+L293D package-pin mapping, logic/motor-power separation and evidence status.
+
+Still to confirm before final submission:
 
 - the camera make and model;
-- motor part numbers or rated voltage;
-- motor-supply voltage and current rating;
-- L293D logic and motor-supply connections; and
-- the actual common-ground and power-safety arrangement.
+- motor part numbers and rated voltage;
+- power-bank and power-board output ratings; and
+- a labelled photograph confirming the actual power and common-ground wiring.
 
 ## Software and communication
 
@@ -186,8 +203,9 @@ external motor supply, and then disconnect Arduino USB.
 - The motor mechanism may not always release exactly one card per pulse.
 - The serial port and camera index are currently configured manually.
 - The dataset is balanced, but no held-out accuracy measurement is included.
-- Add a labelled mechanism photograph, final wiring diagram, demonstration
-  video and a short table of mechanical, electrical and recognition tests.
+- A simulator wiring diagram is included; a labelled physical mechanism/wiring
+  photograph, demonstration video and short table of mechanical, electrical and
+  recognition tests are still required.
 
 ## Credits and references
 
