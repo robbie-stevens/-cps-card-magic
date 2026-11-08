@@ -2,8 +2,11 @@
 
 Cyber Physical Systems — Group 13
 
-An interactive card-handling prototype using an Arduino Uno R3, an L293D
-motor driver, two DC motors, Processing, a camera and Wekinator.
+An interactive card-magic prototype using an Arduino Uno R3, an L293D
+motor driver, two DC motors, Processing, a camera and Wekinator. The machine
+uses a fully black marker card as a positional reference for revealing a
+participant's selected card, rather than identifying the selected card's rank
+and suit.
 
 ## Project status
 
@@ -17,10 +20,10 @@ The current prototype can:
 - run three complete target pulses after detection, then stop; and
 - stop automatically if Processing stops sending a heartbeat.
 
-The classifier does **not** identify all 52 card ranks and suits. In the current
-software, class 1 means continue scanning and class 2 means the target has been
-detected. The team should document how the physical target card or marker is
-prepared before final submission.
+The classifier does **not** identify all 52 card ranks and suits. Class 1 means
+an ordinary playing card; class 2 means the fully black marker card. The
+controller uses detection of that marker to initiate the final transport
+sequence intended to reveal the adjacent selected card.
 
 ## Repository structure
 
@@ -37,18 +40,65 @@ wekinator/WekinatorProject/current/currentData.arff
 ## Interaction
 
 1. Start Arduino, Wekinator and the Processing sketch as described below.
-2. Confirm the correct live camera view by pressing `C` in Processing.
-3. Press `S` to start shuffling. Motor 1 starts immediately and motor 2 starts
-   600 ms later. Press `X` before beginning another mode.
-4. After the participant has selected and replaced the card, move the pack to
-   the dealing side of the machine.
-5. Press `D` to scan and deal. Motor 1 runs for 80 ms and pauses for 1000 ms.
-6. When Wekinator outputs class 2, Arduino completes the pulse already in
-   progress without counting it, then runs three new complete 80 ms pulses and
-   stops.
-7. Press `X` or `Esc` at any time to request an immediate stop.
+   Confirm the correct live camera view by pressing `C`.
+2. The participant loads the deck into the machine for the initial shuffle.
+   Press `S`: motor 1 starts immediately and motor 2 starts 600 ms later.
+   Press `X` to stop before removing the deck or changing modes.
+3. Remove the shuffled deck and deal cards for selection. The participant
+   indicates when to stop and chooses the card at that point. This selection
+   interaction is separate from the final camera-scanning phase.
+4. Before the selected card is returned, ensure that the fully black marker
+   card is at the bottom of the remaining deck. Ask the participant to place
+   their selected card at the very bottom, directly adjacent to the marker.
+5. Invite the participant to cut the deck with the instruction:
+   **"Please cut the deck."** This is the participant's post-selection action;
+   the machine's interleaving shuffle is not run again at this stage.
+6. Place the deck in the left-hand feed compartment. Press `D` to begin the
+   recognition phase. Motor 1 runs for 80 ms and pauses for 1000 ms; motor 2
+   remains off. The camera continuously supplies features to Wekinator as
+   cards pass through the viewing area.
+7. Class 1 leaves the timed feed cycle running. Class 2 identifies the fully
+   black marker and latches the final transport sequence.
+8. Arduino does not count a pulse already in progress as part of the final
+   sequence. It runs three new complete 80 ms pulses, separated by the normal
+   1000 ms pauses, then disables both motor outputs.
+9. After Arduino returns `TARGET_DONE`, Processing displays
+   **"this is your card"**. The final transport is intended to bring the
+   participant's selected card to the reveal position.
+10. Press `X` or `Esc` at any time to request an immediate stop.
 
 `T` simulates a class-2 detection during scanning and is intended for testing.
+The participant's request to stop during selection is a human interaction;
+the software does not automatically detect a spoken stop request.
+
+### Marker-card principle
+
+The fully black marker is a reference card, not the participant's chosen card.
+Placing the chosen card at the bottom of a deck whose bottom card is the
+marker establishes their adjacency. Cutting relocates a block of cards while
+preserving cyclic order; arbitrary interleaving shuffles do not preserve this
+relationship. The participant-facing instruction is simply **"Please cut the
+deck."**
+
+The intended scanning order is to encounter the black marker before its
+adjacent selected card. Wekinator only distinguishes **marker** from
+**non-marker**. It does not recognise the selected card's identity or infer
+adjacency from an image. The deck arrangement and physical feed order provide
+that relationship; the software is not a general card-location system.
+
+### Why three target pulses?
+
+A motor pulse is a short transport action, **not a count of cards**. The team
+reports that, in the current mechanism, advancing the next card fully out
+typically takes approximately **three to five pulses**; one additional pulse
+can leave the selected card only partly advanced.
+
+The current firmware fixes `TARGET_PULSE_COUNT` at **3**, with each pulse
+lasting **80 ms** at PWM **255**. These extra pulses are intended to complete
+transport of the selected card following marker detection. They do not mean
+that three additional cards should be dealt. The observed three-to-five-pulse
+range is a qualitative operating observation, not a measured success rate;
+the fixed three-pulse setting does not guarantee full delivery on every run.
 
 ## Hardware
 
@@ -141,14 +191,15 @@ task:
 
 | Output | Behaviour in the controller |
 |---|---|
-| Class 1 | Continue scanning |
-| Class 2 | Notify Arduino that the target was detected |
+| Class 1 | Ordinary playing cards / non-marker: continue scanning |
+| Class 2 | Fully black marker card: latch the final transport sequence |
 
 The included ARFF dataset contains 605 labelled recordings: 305 class-1
-examples and 300 class-2 examples. The repository does not contain an
-independent test set or measured accuracy. Before final submission, record the
-lighting, camera position, target-card definition, training procedure and a
-test result using previously unseen examples.
+examples and 300 class-2 examples. The class definitions are ordinary playing
+cards and the fully black marker card, respectively. The repository does not
+contain an independent test set or measured accuracy. Before final submission,
+record the lighting, camera position, training procedure and test results
+using previously unseen examples.
 
 ## Setup
 
@@ -200,7 +251,13 @@ external motor supply, and then disconnect Arduino USB.
 
 - The camera classifier depends on the training view, lighting and card
   position.
-- The motor mechanism may not always release exactly one card per pulse.
+- The motor mechanism may slip, jam or advance cards inconsistently. A pulse
+  is not equivalent to one card; three final pulses may be insufficient when
+  the next card needs more transport.
+- The marker method depends on the prepared deck relationship, cutting rather
+  than interleaving after selection, and the physical scanning order.
+- Classification uses image brightness, so non-marker dark scenes or backgrounds
+  may be confused with the black marker; robustness has not been quantified.
 - The serial port and camera index are currently configured manually.
 - The dataset is balanced, but no held-out accuracy measurement is included.
 - A simulator wiring diagram is included; a labelled physical mechanism/wiring
