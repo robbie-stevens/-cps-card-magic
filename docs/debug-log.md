@@ -124,13 +124,15 @@ serial test, Arduino returned `SHUFFLING` but the motors did not rotate.
 `SCANNING` or `SHUFFLING`, and handles a missing acknowledgement with a stop
 request. The target message appears only after Arduino returns `TARGET_DONE`.
 
-**Result / status:** **Implemented; original hardware cause not isolated.**
-The final software has explicit acknowledgement handling. Arduino replies
-confirm program execution, not measured motor movement. The earlier
-non-response cannot retrospectively be assigned to a single wiring or supply fault.
+**Result / status:** **Resolved in the reported test.** The operator confirmed
+that D04 was resolved. Improving Arduino feedback handling and command
+acknowledgement addressed the interface/execution-state mismatch: Processing
+sets the acknowledgement state before sending a start command and updates
+the interface after receiving the Arduino response. Arduino replies confirm
+program execution; they are not motor-motion sensor measurements.
 
-**Evidence:** Operator reports, direct serial feedback and
-`readArduino()` / `handleFeedback()` in the current Processing code.
+**Evidence:** Operator confirmation that D04 is resolved, direct serial feedback
+and `readArduino()` / `handleFeedback()` in the current Processing code.
 
 ## D05 - Thick stacks slipped instead of feeding
 
