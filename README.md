@@ -35,6 +35,7 @@ wekinator/WekinatorProject/WekinatorProject.wekproj
 wekinator/WekinatorProject/inputConfig.xml
 wekinator/WekinatorProject/outputConfig.xml
 wekinator/WekinatorProject/current/currentData.arff
+docs/debug-log.md
 ```
 
 ## Interaction
@@ -111,7 +112,7 @@ the fixed three-pulse setting does not guarantee full delivery on every run.
 | Two DC motors | Shuffle and deal cards |
 | External camera | Captures the card area for classification |
 | Computer | Runs Processing and Wekinator |
-| School-provided power bank and power board | Supply the motor-power path; exact output ratings remain to be confirmed |
+| School-provided power bank and power board | Supply the motor-power path |
 
 ### Arduino pin assignments
 
@@ -140,19 +141,14 @@ prototype, does not establish its actual supply voltage, and is not a
 recommendation to power the motors from a 9 V battery.
 
 The physical prototype uses a school-provided power bank and power board.
-Their make/model, output voltage and current rating have not yet been supplied.
 The diagram documents the intended wiring; it is not a photograph or an
 electrical measurement of the assembled prototype.
 
 See [Circuit wiring and power-supply notes](docs/circuit-and-power.md) for the
 L293D package-pin mapping, logic/motor-power separation and evidence status.
 
-Still to confirm before final submission:
-
-- the camera make and model;
-- motor part numbers and rated voltage;
-- power-bank and power-board output ratings; and
-- a labelled photograph confirming the actual power and common-ground wiring.
+A labelled photograph of the actual power and common-ground wiring will
+complement the simulator diagram.
 
 ## Software and communication
 
@@ -246,6 +242,13 @@ live camera preview. Press `C` to confirm the camera before using `D`.
 
 To shut down, press `X`, disable Wekinator Run, stop Processing, disconnect the
 external motor supply, and then disconnect Arduino USB.
+
+## Debugging and iteration
+
+The [Debug and Iteration Log](docs/debug-log.md) records the camera-capture
+workaround, motor-direction and pulse tuning, acknowledgement handling,
+feeding limitations, target transport and fault-handling changes. It separates
+reported test outcomes from changes that are only established by source code.
 
 ## Known limitations and required evidence
 

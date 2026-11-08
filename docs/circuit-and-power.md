@@ -18,9 +18,8 @@ uses the **school-provided power bank and power board**, for which equivalent
 components were unavailable in the simulator. Do not interpret the battery
 label as the actual motor-supply voltage or as an instruction to use 9 V.
 
-The exact power-bank and power-board model numbers, output voltage and current
-rating remain to be recorded. No claim of sufficient loaded current or measured
-electrical performance is made from this diagram alone.
+The diagram does not establish loaded electrical performance or demonstrate
+that the supply is sufficient under every operating condition.
 
 ## Motor-control connections
 
@@ -73,9 +72,9 @@ power-disconnection method.
 |---|---|---|
 | Controller and driver | Supplied diagram and final code identify Uno R3 and L293D | Confirm with a labelled assembly photograph |
 | Control-pin mapping | Current code and supplied diagram | Inspect actual jumper connections |
-| Power-source type | Team reports a school-provided power bank and power board | Record labels, ratings and exact distribution wiring |
+| Power-source type | Team reports a school-provided power bank and power board | Add a photograph of the actual distribution wiring |
 | Circuit illustration | Simulator diagram included above | Add a physical wiring photograph |
-| Motors | Two DC motors shown and controlled in firmware | Record motor model and rated voltage |
+| Motors | Two DC motors shown and controlled in firmware | Add a photograph of the installed motors |
 | Demonstration | Behaviour specified by the code | Add a demonstration video and repeatable test results |
 
 Supply ratings, motor specifications and test outcomes are recorded only when
