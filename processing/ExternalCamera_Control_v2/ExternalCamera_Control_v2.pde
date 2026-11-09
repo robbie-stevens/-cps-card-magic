@@ -128,7 +128,7 @@ void draw() {
     targetPending = false;
     targetSent = true;
     arduino.write('T');
-    status = "Class 2 detected - requesting three target pulses";
+    status = "Class 2 detected - waiting for next full 80 ms pulse";
   }
 
   drawInterface();
@@ -139,7 +139,7 @@ void drawInterface() {
 
   fill(255);
   textSize(25);
-  text("Card Machine - Three Target Pulses", 30, 25);
+  text("Card Machine - Next Pulse", 30, 25);
 
   textSize(18);
   text("S = Shuffle both motors", 30, 80);
@@ -300,7 +300,7 @@ void handleFeedback(String line) {
     scanning = true;
     commandWaiting = false;
     commandAt = 0;
-    status = "Scanning - class 1 continues; class 2 starts target sequence";
+    status = "Scanning - class 1 continues; class 2 selects next pulse";
   }
   else if (line.equals("SHUFFLING")) {
     activeMode = 'S';
@@ -310,10 +310,10 @@ void handleFeedback(String line) {
     status = "Shuffling";
   }
   else if (line.equals("TARGET_LATCHED")) {
-    status = "Arduino accepted target - three full pulses will run";
+    status = "Arduino accepted target - next pulse will be final";
   }
-  else if (line.startsWith("TARGET_PULSE ")) {
-    status = line;
+  else if (line.equals("FINAL_PULSE")) {
+    status = "Final 80 ms pulse running";
   }
   else if (line.equals("TARGET_DONE")) {
     activeMode = 'X';

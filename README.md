@@ -8,6 +8,15 @@ uses a fully black marker card as a positional reference for revealing a
 participant's selected card, rather than identifying the selected card's rank
 and suit.
 
+## Final files and documentation
+
+- [Download the complete English report and final runtime package](docs/downloads/CardMagic_Final_Delivery.zip). Extract the ZIP before opening the Word report so its local source hyperlinks work.
+- [Arduino final source](arduino/TwoDC/TwoDC.ino)
+- [Processing final source](processing/ExternalCamera_Control_v2/ExternalCamera_Control_v2.pde)
+- [Wekinator project](wekinator/WekinatorProject/WekinatorProject.wekproj)
+- [Saved classifier model](wekinator/WekinatorProject/current/models/model0.xml)
+- [Final runtime guide](docs/final-runtime.md)
+
 ## Project status
 
 The current prototype can:
@@ -192,10 +201,7 @@ task:
 
 The included ARFF dataset contains 605 labelled recordings: 305 class-1
 examples and 300 class-2 examples. The class definitions are ordinary playing
-cards and the fully black marker card, respectively. The repository does not
-contain an independent test set or measured accuracy. Before final submission,
-record the lighting, camera position, training procedure and test results
-using previously unseen examples.
+cards and the fully black marker card, respectively. The complete English report in the download package records an independent 60-presentation classification evaluation: 59/60 correct (98.33%), with 29/30 marker detections and 30/30 ordinary-card classifications. Motors were disabled during that evaluation; these figures are not whole-machine reveal success rates.
 
 ## Setup
 
@@ -262,7 +268,7 @@ reported test outcomes from changes that are only established by source code.
 - Classification uses image brightness, so non-marker dark scenes or backgrounds
   may be confused with the black marker; robustness has not been quantified.
 - The serial port and camera index are currently configured manually.
-- The dataset is balanced, but no held-out accuracy measurement is included.
+- Classification evaluation is recorded in Section 5.4 of the complete English report; whole-machine reliability is assessed separately.
 - A simulator wiring diagram is included; a labelled physical mechanism/wiring
   photograph, demonstration video and short table of mechanical, electrical and
   recognition tests are still required.
