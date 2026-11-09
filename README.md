@@ -2,6 +2,8 @@
 
 ## Files and navigation
 
+- [Mechanical STL models and model notes](mechanical/models/README.md)
+
 - [Final Arduino source](arduino/TwoDC/TwoDC.ino)
 - [Final Processing source](processing/ExternalCamera_Control_v2/ExternalCamera_Control_v2.pde)
 - [Wekinator project](wekinator/WekinatorProject/WekinatorProject.wekproj)
