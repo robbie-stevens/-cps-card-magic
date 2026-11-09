@@ -2,6 +2,8 @@
 
 ## Files and navigation
 
+- [Complete machine models and structural drawings](mechanical/full-machine/README.md)
+
 - [Mechanical STL models and model notes](mechanical/models/README.md)
 
 - [Final Arduino source](arduino/TwoDC/TwoDC.ino)
@@ -258,6 +260,86 @@ Dimensions in mm. Parentheses retain the original reference notation. Read state
 ![Report figure 11](docs/images/final-report/figure-11.png)
 
 Dimensions in mm. Parentheses retain the original reference notation. Read stated dimensions rather than measuring the scaled page.
+
+### 2.11 Complete Machine Layout and Enclosure
+
+The complete model places the two mirrored feed mechanisms and the electronics on a shared base. The drawing coordinate system uses Z = 0 at the underside of the base, +Y towards the shuffler front and -Y towards the electronics casing. The machine centre plane is X = 10.98 mm. In the assembly drawing, the overall envelope is 206.68 mm wide, 247.39 mm deep and 140.15 mm high.
+
+| Module | Arrangement and role |
+| --- | --- |
+| Base | Supports the gearboxes, casing fixings and electronics locators; a divider separates the front mechanism bay from the rear electronics area |
+| A Left and right gearboxes | Stand on raised pads with shafts along Y and motors facing the electronics side; feed cards towards the central chamber |
+| B Electronics casing | Rounded rear shell with internal partition, mounting posts and a display aperture |
+| C Shuffler casing | Trays, roller and sector windows, and the central collection opening; represented as a transparent simplified envelope |
+| D Electronics references | Breadboard and power-board clearance blocks positioned within the base locators |
+
+The base is specified as a black 3D-printed part and the electronics casing as a white 3D-printed shell. This contrast separates the mechanism support from the rounded rear enclosure. The shell conceals wiring while the paired loading areas and central opening keep the card interaction legible. Transparent surfaces in the renderings expose the structure for explanation; they do not establish the material of a fabricated enclosure.
+
+![Complete machine view 1](docs/images/full-machine/assembly-01.png)
+
+Figure M5 Complete machine viewed from the front right, with the shuffler casing shown transparent to expose both gearboxes.
+
+![Complete machine view 2](docs/images/full-machine/assembly-02.png)
+
+Figure M6 Rear left view showing the rounded electronics casing and its relationship to the base.
+
+### 2.12 Card Path and Structural Interfaces
+
+Each tray positions the stack above its feed roller. The model places each roller top 0.7 mm above the tray deck through a 9 by 16 mm window. Each sector pusher passes through a larger 36 by 16 mm window. The roller axes are 86.0 mm apart and the sector pivots 157.6 mm apart. The approximate central front opening is 67 by 47 mm and provides access to the collected deck; its illustrated chamber depth is approximately 80 mm.
+
+These windows align the drive elements with the bottom card and central card path. During S mode, both motors operate; during D mode, only the left feeds. The geometry provides inward transport but does not synchronise independent DC motors or guarantee alternating single-card drops.
+
+| Interface | Drawing specification |
+| --- | --- |
+| Base envelope | 205.68 by 246.89 by 17.8 mm in assembly orientation |
+| Base walls | 1.8 mm floor and outer walls; 3.6 mm divider; wall top Z = 10.15 mm |
+| Gearbox pads | 51.85 by 23.70 mm; top Z = 17.65 mm; two 6.15 mm diameter fixing bosses per pad |
+| Casing mounting | Four base bosses with 3.0 mm through holes and 5.55 mm underside counterbores; casing posts have 2.45 mm pilot holes |
+| Breadboard locator L1 | 171.0 by 60.0 mm outside; 168.0 by 57.0 mm inside; accommodates a 165 by 55 mm breadboard |
+| Electronics shell | 206.68 by 151.69 by 130.0 mm; 1.8 mm walls; upper edge radius 44.5 mm |
+| Display provision | 73.0 by 26.0 mm opening with an internal 82.0 by 38.0 mm frame |
+| Other shell openings | 85.85 by 35.0 mm rounded-end slot and two 10.0 mm diameter holes |
+
+The shell drawing reserves a position for a 16 by 2 character LCD, with physical fit marked for confirmation. It is an enclosure provision, not evidence of a connected display or a function in the final two-motor firmware. The current reveal message remains on the computer. Screw lengths must match the actual joint stack-up. Dimensions shown in parentheses and the shuffler-envelope window sizes are photographic estimates in the drawing set.
+
+![Complete machine view 3](docs/images/full-machine/assembly-03.png)
+
+Figure M7 Front view from above showing the paired trays, mirrored gearboxes and central card collection area.
+
+![Complete machine view 4](docs/images/full-machine/assembly-04.png)
+
+Figure M8 Exploded view separating the electronics casing, shuffler envelope, gearboxes, electronics references and base.
+
+### 2.13 Complete Machine Assembly Sequence
+
+1. Place the base on the bench and locate the breadboard and power board in the rear electronics area.
+
+2. Mount gearbox L on the +X pad and gearbox R on the -X pad, with both motors towards -Y. Check shaft and gear freedom before closing the casings.
+
+3. Position the shuffler casing over the front bay, aligning its tray windows with the rollers and sectors. Check clearances through their full motion.
+
+4. Seat the electronics shell on the base walls and secure its four posts from below. Route wiring away from the moving gears and leave power disconnection accessible.
+
+5. Check that both feeding directions lead towards the centre. Test without cards, then with a small stack, before loading the full deck.
+
+### 2.14 Complete Model and Drawing Resources
+
+The complete STL package contains 22 STL files and the original English model notes. All meshes use millimetres and are positioned in the assembly coordinate frame. The file 00_complete_assembly.stl contains the assembled scene; it is not a single print-in-place part. Files 01 and 02 are the base and electronics shell. File 03 is a simplified shuffler envelope; files 07 and 08 are breadboard and power-board clearance blocks. The motor meshes and grouped shaft meshes are references for placement, not substitutes for the electrical components or steel shafts.
+
+The earlier mechanical/models directory remains the detailed single-side gearbox resource. The mechanical/full-machine directory is the complete-machine resource and includes the assembled placement, base, rear shell, reference envelopes and the full structural drawing set. The two resources describe different scopes rather than competing runtime versions.
+
+| Drawing identifiers | Coverage |
+| --- | --- |
+| CM-00 and CM-01 | General assembly and exploded module arrangement |
+| CM-02 and CM-03 | Made, purchased and reused parts |
+| CM-04 and CM-05 | Base hole layout, structural interfaces and card path |
+| CM-06 | Four rendered views |
+| CM-10, CM-20 and CM-30 | Gearbox, electronics casing and shuffler casing modules |
+| CM-P01 to CM-P09 | Individual base, shell, envelope, plates, gears, roller and motor-pinion sheets |
+
+The 19-page structural drawing PDF complements the seven detailed GX gearbox drawings already reproduced in Section 2.10. Its modelled pinions use profile shifts of +0.5 for Z0 and +0.67 for Z4. These describe the supplied model geometry; they do not replace the earlier requirement to check the physical pinions when manufacturing replacements.
+
+[Download complete STL package](mechanical/full-machine/Card-Machine-3D-STL.zip) · [Open all 19 structural drawing sheets](mechanical/full-machine/Card-Shuffler-Structure-Drawings.pdf) · [Model directory and notes](mechanical/full-machine/README.md)
 
 ## 3 Hardware Design
 
@@ -913,3 +995,5 @@ The group will confirm members’ contributions to mechanical modifications, enc
 Mechanical source: Card-Feed Gearbox: Mechanical Structure Report, 2026-11-09, credited to Christina. It provides tooth counts, dimensions, transmission analysis, assembly instructions and drawings GX-01 to GX-07. This document retains the reference-dimension notation from those drawings.
 
 Project repository: https://github.com/robbie-stevens/-cps-card-magic . The final submission should also list the Arduino, Processing, oscP5 and Wekinator documentation, L293D datasheet and adapted code sources actually used, distinguishing original work from modifications.
+
+Structural drawing source: [Card Shuffler Structure Drawings, 19 sheets, 2026-11-09](mechanical/full-machine/Card-Shuffler-Structure-Drawings.pdf). The complete-machine STL archive accompanies these drawings.
