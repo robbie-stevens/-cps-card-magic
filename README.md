@@ -990,10 +990,27 @@ The project files document not only the final effect, but also how the design de
 
 ## 10 Group Contributions and References
 
+### 10.1 Group Contributions
+
 The group will confirm members’ contributions to mechanical modifications, enclosure construction, circuitry, programming, training, testing and documentation.
 
-Mechanical source: Card-Feed Gearbox: Mechanical Structure Report, 2026-11-09, credited to Christina. It provides tooth counts, dimensions, transmission analysis, assembly instructions and drawings GX-01 to GX-07. This document retains the reference-dimension notation from those drawings.
+### 10.2 Software and Hardware References
 
-Project repository: https://github.com/robbie-stevens/-cps-card-magic . The final submission should also list the Arduino, Processing, oscP5 and Wekinator documentation, L293D datasheet and adapted code sources actually used, distinguishing original work from modifications.
+No external application code was adapted for this project. The references below identify the software tools, libraries and hardware documentation relevant to the implementation; citing a library does not imply that its example code was copied or adapted.
 
-Structural drawing source: [Card Shuffler Structure Drawings, 19 sheets, 2026-11-09](mechanical/full-machine/Card-Shuffler-Structure-Drawings.pdf). The complete-machine STL archive accompanies these drawings.
+1. Arduino. [Arduino UNO R3 documentation](https://docs.arduino.cc/hardware/uno-rev3/). Board specifications, pinout and controller reference.
+2. Arduino. [analogWrite reference](https://docs.arduino.cc/language-reference/en/functions/analog-io/analogWrite/). PWM output used for motor-enable control.
+3. Processing Foundation. [Video library reference](https://processing.org/reference/libraries/video/). Camera capture and the Capture class.
+4. Processing Foundation. [Serial library reference](https://processing.org/reference/libraries/serial/). Serial-port selection and communication between Processing and Arduino.
+5. Andreas Schlegel. [oscP5 library documentation](https://sojamo.de/libraries/oscP5/). OSC messages and network communication between Processing and Wekinator.
+6. Rebecca Fiebrink. [Wekinator official source repository](https://github.com/fiebrink1/wekinator). Software reference for the interactive classification and model-training environment.
+7. Texas Instruments. [L293x Quadruple Half-H Drivers datasheet, revision D](https://www.ti.com/lit/ds/symlink/l293.pdf). L293D pin functions, separate logic and motor supplies, enable inputs and electrical specifications.
+
+Online references checked on 10 November 2026.
+
+### 10.3 Project Mechanical Resources
+
+- Card-Feed Gearbox: Mechanical Structure Report, 9 November 2026, credited to Christina. This project report provides tooth counts, dimensions, transmission analysis, assembly instructions and drawings GX-01 to GX-07. Reference-dimension notation is retained in the documentation.
+- [Card Shuffler Structure Drawings](mechanical/full-machine/Card-Shuffler-Structure-Drawings.pdf), 19 sheets, 9 November 2026. The drawing set documents the complete assembly, structural interfaces and individual components.
+- [Complete machine model package](mechanical/full-machine/Card-Machine-3D-STL.zip) and [single-side gearbox models](mechanical/models/README.md).
+- [Project repository](https://github.com/robbie-stevens/-cps-card-magic).
