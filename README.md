@@ -82,9 +82,9 @@ The aesthetic expression therefore comes not only from static appearance, but al
 
 The photographs below document the physical prototype and its construction. The black printed base provides mounting areas for the card-feeding mechanisms and electronics, bringing the mechanical and control components together in one assembly.
 
-![Physical prototype with the controller, breadboard, Power Board and card shuffler connected](docs/images/physical-object/assembled-wiring.jpg)
+![Updated physical wiring with the Uno, Power Board, two DC motors, camera and LCD](docs/images/physical-object/assembled-wiring.jpg)
 
-Figure P1 Physical wiring and assembly layout. The open electronics compartment contains the Elegoo Uno R3, breadboard, school-supplied Power Board and jumper connections. USB cables connect the controller and power supply, while the card-shuffling unit and central card collection area are visible alongside the electronics.
+Figure P1 Updated physical circuit integration during construction. The open black base exposes the Uno controller, breadboard, school-supplied Power Board, jumper wiring and two DC motor-driven gear modules. The white enclosure carries the camera and the connected 1602 LCD, shown displaying “Thank you!”. This photograph records the assembly and wiring layout with the card-loading structure removed for access.
 
 ![Construction-stage assembly showing two DC motors, gear modules and the electronics compartment](docs/images/physical-object/construction-stage.jpg)
 
