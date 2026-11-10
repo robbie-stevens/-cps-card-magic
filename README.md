@@ -222,17 +222,17 @@ Risks include wear in plastic shaft holes, friction and backlash from additional
 
 ### 2.9 Drawing Notes
 
-Seven drawings, GX-01 to GX-07, follow in this chapter. They use first-angle projection and millimetres. Parenthesised dimensions are photo-scaled reference values from the report and retain their original notation. Before manufacturing replacements, check these dimensions, the P2 outline and window, and the pinion profiles. The report labels the photographed module as the left side; left and right definitions should be standardised in the final assembly.
+The drawings below combine five updated CM component sheets with two explicit GX right-hand plate drawings. All dimensions are in millimetres and use first-angle projection. Parenthesized dimensions retain the source's photographic-reference notation. Screen or page scaling is not a manufacturing scale.
 
-| Drawing | Component | Total quantity | Original scale |
-| --- | --- | --- | --- |
-| GX-01 | Feed roller A | 2 | 5:1 |
-| GX-02 | Idler gear B | 2 | 2.5:1 |
-| GX-03 | Compound gear C | 2 | 2.5:1 |
-| GX-04 | Motor side plate P1-L | 1 | 2:1 |
-| GX-05 | Outer side plate P2-L | 1 | 2:1 |
-| GX-06 | Motor side plate P1-R | 1 | 2:1 |
-| GX-07 | Outer side plate P2-R | 1 | 2:1 |
+| Figure | Drawing | Component |
+| --- | --- | --- |
+| 5 | CM-P08 | Feed roller A |
+| 6 | CM-P07 | Idler gear B |
+| 7 | CM-P06 | Compound gear C |
+| 8 | CM-P04 | Motor side plate P1; opposite side mirrored |
+| 9 | CM-P05 | Outer side plate P2; opposite side mirrored |
+| 10 | GX-06 | Explicit right-hand motor side plate P1-R |
+| 11 | GX-07 | Explicit right-hand outer side plate P2-R |
 
 ### 2.10 Mechanical Component Engineering Drawings
 
@@ -284,83 +284,109 @@ Dimensions in mm. Read stated dimensions rather than measuring the scaled page.
 
 ### 2.11 Complete Machine Layout and Enclosure
 
-The complete model places the two mirrored feed mechanisms and the electronics on a shared base. The drawing coordinate system uses Z = 0 at the underside of the base, +Y towards the shuffler front and -Y towards the electronics casing. The machine centre plane is X = 10.98 mm. In the assembly drawing, the overall envelope is 206.68 mm wide, 247.39 mm deep and 140.15 mm high.
+The general assembly drawing defines a model envelope of **206.68 mm wide by 247.39 mm deep by 140.15 mm high**. Z = 0 is the underside of the base, +Y points towards the card-shuffling front and -Y towards the electronics. The two gearboxes are mirrored about X = 10.98 mm.
 
-| Module | Arrangement and role |
-| --- | --- |
-| Base | Supports the gearboxes, casing fixings and electronics locators; a divider separates the front mechanism bay from the rear electronics area |
-| A Left and right gearboxes | Stand on raised pads with shafts along Y and motors facing the electronics side; feed cards towards the central chamber |
-| B Electronics casing | Rounded rear shell with internal partition, mounting posts and a display aperture |
-| C Shuffler casing | Trays, roller and sector windows, and the central collection opening; represented as a transparent simplified envelope |
-| D Electronics references | Breadboard and power-board clearance blocks positioned within the base locators |
+![CM-00 general assembly with front, side and top views and overall dimensions](docs/images/full-machine/general-assembly.png)
 
-The base is specified as a black 3D-printed part and the electronics casing as a white 3D-printed shell. This contrast separates the mechanism support from the rounded rear enclosure. The shell conceals wiring while the paired loading areas and central opening keep the card interaction legible. Transparent surfaces in the renderings expose the structure for explanation; they do not establish the material of a fabricated enclosure.
+Figure M5. General assembly, CM-00 (PDF page 1). Orthographic views establish the overall envelope and module positions; the transparent front casing exposes the card-feeding mechanisms.
 
-![Complete machine view 1](docs/images/full-machine/assembly-01.png)
+| Module | Arrangement | Design purpose |
+| --- | --- | --- |
+| Base | Shared printed floor, raised gearbox pads, mounting bosses and electronics locators | Establishes repeatable positions for the mechanisms and electronics |
+| A: two gearboxes | Front bay; shafts along Y and motors towards the rear | Provides inward feeding from both stacks during shuffling and one stack during recognition |
+| B: electronics casing | Rounded rear shell with internal partition and front apertures | Separates wiring from the card-handling area and integrates the camera/display interface |
+| C: shuffler casing | Paired trays over the gearboxes and a central collection chamber | Positions cards over the rollers and provides a familiar loading and retrieval arrangement |
+| D: electronics | Breadboard and Power Board in base locators | Organises the control circuit without placing it in the gear path |
 
-Figure M5 Complete machine viewed from the front right, with the shuffler casing shown transparent to expose both gearboxes.
+The black printed base visually anchors the mechanism, while the white printed shell gives the camera and LCD a distinct interface surface. The rounded upper edges soften the technical enclosure. Printing the support and shell as separate parts permits access to wiring and mechanisms during integration, rather than enclosing them permanently. These choices connect fabrication and appearance to the concept described in Section 1.3.
 
-![Complete machine view 2](docs/images/full-machine/assembly-02.png)
+#### Structural Part Schedule
 
-Figure M6 Rear left view showing the rounded electronics casing and its relationship to the base.
+This schedule consolidates PDF pages 3-4 rather than reproducing their lists as additional images. Gear details remain in Section 2.2; electrical component selection is documented in Section 3.1.
+
+| Structural item | Quantity | Fabrication or assembly role | Drawing |
+| --- | --- | --- | --- |
+| Black base | 1 | 3D-printed support with gearbox pads and electronics locators | CM-P01 |
+| White electronics shell | 1 | 3D-printed enclosure with mounting posts and interface openings | CM-P02 |
+| Shuffler casing | 1 | Card trays and collection chamber; supplied model is a simplified envelope | CM-P03 |
+| Motor-side and outer support plates | 2 of each type | Left/right mirrored pairs supporting the shafts | CM-P04, CM-P05 |
+| Compound gear, idler, roller and motor pinion | 2 of each | One transmission set per side | CM-P06 to CM-P09 |
+| Steel shafts | 6 | Two each for compound gear, idler and roller; 2 mm diameter | CM-03 |
+| Motor fixing screws | 4 | Two per motor; select to match the motor face | CM-03 |
+| Shell-to-base screws | 4 | Inserted from below into shell posts | CM-03, CM-04 |
+| Gearbox fixing locations | 4 | Two per raised pad; fasteners must suit the assembled joint | CM-03, CM-04 |
+
+The shaft lengths recorded in CM-03 are 21.0 mm for C, 18.1 mm for B and 16.5 mm for A. Keep the gears free to turn when closing their support plates. The complete source schedule and individual-part sheets remain available in the [structural drawing PDF](mechanical/full-machine/Card-Shuffler-Structure-Drawings.pdf).
 
 ### 2.12 Card Path and Structural Interfaces
 
-Each tray positions the stack above its feed roller. The model places each roller top 0.7 mm above the tray deck through a 9 by 16 mm window. Each sector pusher passes through a larger 36 by 16 mm window. The roller axes are 86.0 mm apart and the sector pivots 157.6 mm apart. The approximate central front opening is 67 by 47 mm and provides access to the collected deck; its illustrated chamber depth is approximately 80 mm.
+#### Gearbox-to-Tray Alignment
 
-These windows align the drive elements with the bottom card and central card path. During S mode, both motors operate; during D mode, only the left feeds. The geometry provides inward transport but does not synchronise independent DC motors or guarantee alternating single-card drops.
+![CM-10 single-side gearbox assembly with gear and shaft locations](docs/images/full-machine/gearbox-assembly.png)
+
+Figure M6. Gearbox assembly, CM-10 (PDF page 8). The views relate motor, compound-gear, idler and roller axes to the support plates. The power path and ratios are explained once in Sections 2.3-2.4.
+
+Each roller projects 0.7 mm above the tray deck through a 9 by 16 mm window. The sector pusher passes through a 36 by 16 mm outer window. Roller axes are 86.0 mm apart; sector pivots are 157.6 mm apart. The roller provides frictional transport and the sector assists pushing towards the central chamber. During S mode both sides operate; during D mode only the left feeds. This geometry does not provide mechanical phase synchronisation between the independent motors.
+
+![CM-30 shuffler casing showing tray windows and central access opening](docs/images/full-machine/shuffler-casing.png)
+
+Figure M7. Card-handling casing, CM-30 (PDF page 10). The approximately 67 by 47 mm front opening gives access to the central collection chamber, illustrated as approximately 80 mm deep. Parenthesized values and tray-window dimensions are photographic estimates in the source drawing.
+
+#### Base Fixing and Electronics Location
+
+![CM-04 base mounting holes, gearbox pads and electronics locators](docs/images/full-machine/base-hole-layout.png)
+
+Figure M8. Base hole layout, CM-04 (PDF page 5). B1-B4 locate the electronics shell, B5-B6 serve the front casing, and P1-P4 identify gearbox-pad bosses. The drawing defines its own front-left datum O for the coordinate table.
+
+The raised pads establish gearbox height relative to the trays. Locators organise the rear electronics, and the 3.6 mm divider separates it from the front mechanism bay. Underside access to the shell screws allows the enclosure to be removed for wiring and maintenance. The base geometry locates components; secure routing and strain relief are still required for wires, as discussed in Section 3.4.
 
 | Interface | Drawing specification |
 | --- | --- |
 | Base envelope | 205.68 by 246.89 by 17.8 mm in assembly orientation |
-| Base walls | 1.8 mm floor and outer walls; 3.6 mm divider; wall top Z = 10.15 mm |
-| Gearbox pads | 51.85 by 23.70 mm; top Z = 17.65 mm; two 6.15 mm diameter fixing bosses per pad |
-| Casing mounting | Four base bosses with 3.0 mm through holes and 5.55 mm underside counterbores; casing posts have 2.45 mm pilot holes |
-| Breadboard locator L1 | 171.0 by 60.0 mm outside; 168.0 by 57.0 mm inside; accommodates a 165 by 55 mm breadboard |
-| Electronics shell | 206.68 by 151.69 by 130.0 mm; 1.8 mm walls; upper edge radius 44.5 mm |
-| Display provision | 73.0 by 26.0 mm opening with an internal 82.0 by 38.0 mm frame |
-| Other shell openings | 85.85 by 35.0 mm rounded-end slot and two 10.0 mm diameter holes |
+| Floor and walls | 1.8 mm floor and outer walls; 3.6 mm divider |
+| Gearbox pads | 51.85 by 23.70 mm; top Z = 17.65 mm; two 6.15 mm diameter bosses each |
+| Shell fixing | Four 3.0 mm base holes with 5.55 mm underside counterbores, aligned to shell posts with 2.45 mm pilot holes |
+| Breadboard locator L1 | 168.0 by 57.0 mm internal clearance for a 165 by 55 mm breadboard |
 
-The shell drawing reserves a position for a 16 by 2 character LCD, with physical fit marked for confirmation. It is an enclosure provision, not evidence of a connected display or a function in the final two-motor firmware. The current reveal message remains on the computer. Screw lengths must match the actual joint stack-up. Dimensions shown in parentheses and the shuffler-envelope window sizes are photographic estimates in the drawing set.
+#### Electronics Shell and User Interface
 
-![Complete machine view 3](docs/images/full-machine/assembly-03.png)
+![CM-20 electronics casing with interface apertures and internal supports](docs/images/full-machine/electronics-casing.png)
 
-Figure M7 Front view from above showing the paired trays, mirrored gearboxes and central card collection area.
+Figure M9. Electronics casing, CM-20 (PDF page 9). The shell drawing shows the display aperture, rounded slot, internal partition and fixing posts. Its original LCD fit note records the drawing-stage status; the connected LCD is documented in physical photograph P1 and the current runtime.
 
-![Complete machine view 4](docs/images/full-machine/assembly-04.png)
-
-Figure M8 Exploded view separating the electronics casing, shuffler envelope, gearboxes, electronics references and base.
+The shell measures 206.68 by 151.69 by 130.0 mm, with 1.8 mm walls and 44.5 mm upper-edge radii. Its 73.0 by 26.0 mm display opening has an 82.0 by 38.0 mm internal frame. An 85.85 by 35.0 mm rounded slot and two 10.0 mm holes complete the front-face openings. Physical photographs show how the camera and LCD were integrated; the CAD shell is a structural reference rather than a complete electronic assembly.
 
 ### 2.13 Complete Machine Assembly Sequence
 
-1. Place the base on the bench and locate the breadboard and power board in the rear electronics area.
+![CM-01 labelled exploded assembly of base, mechanisms, casings and electronics](docs/images/full-machine/exploded-modules.png)
 
-2. Mount gearbox L on the +X pad and gearbox R on the -X pad, with both motors towards -Y. Check shaft and gear freedom before closing the casings.
+Figure M10. Labelled exploded assembly, CM-01 (PDF page 2). A identifies each gearbox, B the electronics shell, C the shuffler casing and D the electronics references. Separation distances illustrate assembly relationships, not installation travel.
 
-3. Position the shuffler casing over the front bay, aligning its tray windows with the rollers and sectors. Check clearances through their full motion.
+1. Place the base on the bench. Seat the breadboard and Power Board in the rear locators, keeping the front mechanism bay clear.
+2. Mount gearbox L on the +X pad and gearbox R on the -X pad, with motors towards -Y. The drawing's L/R labels refer to its coordinate system, not the viewer's screen position.
+3. Check gear freedom by hand with power disconnected, then fit the front casing so the rollers and sectors align with their windows through a complete cycle.
+4. Route cables clear of gears and card paths, connect the interface components, and seat the rear shell on the base walls. Secure its four posts from below with screws appropriate to the joint thickness.
+5. Check inward feeding directions with no cards, then test with a small stack. Adjust the feeding parameters against actual card transport before increasing the stack.
 
-4. Seat the electronics shell on the base walls and secure its four posts from below. Route wiring away from the moving gears and leave power disconnection accessible.
-
-5. Check that both feeding directions lead towards the centre. Test without cards, then with a small stack, before loading the full deck.
+This sequence separates alignment checks from powered testing and keeps the shell removable during debugging. It does not imply that one gear revolution or motor pulse always transports exactly one card; feeding limitations are discussed in Section 7.
 
 ### 2.14 Complete Model and Drawing Resources
 
-The complete STL package contains 22 STL files and the original English model notes. All meshes use millimetres and are positioned in the assembly coordinate frame. The file 00_complete_assembly.stl contains the assembled scene; it is not a single print-in-place part. Files 01 and 02 are the base and electronics shell. File 03 is a simplified shuffler envelope; files 07 and 08 are breadboard and power-board clearance blocks. The motor meshes and grouped shaft meshes are references for placement, not substitutes for the electrical components or steel shafts.
+The [complete STL package](mechanical/full-machine/Card-Machine-3D-STL.zip) contains 22 STL files in millimetres and assembly coordinates. `00_complete_assembly.stl` is an assembled scene, not a print-in-place part. Files 01 and 02 are the base and electronics shell. File 03 is a simplified shuffler envelope; files 07 and 08 are electronics clearance blocks. Motor and shaft reference meshes do not replace the physical components.
 
-The earlier mechanical/models directory remains the detailed single-side gearbox resource. The mechanical/full-machine directory is the complete-machine resource and includes the assembled placement, base, rear shell, reference envelopes and the full structural drawing set. The two resources describe different scopes rather than competing runtime versions.
+The [single-side gearbox directory](mechanical/models/README.md) covers transmission parts; the [complete-machine directory](mechanical/full-machine/README.md) covers their placement, support and enclosure. These are different scopes, not competing runtime versions.
 
-| Drawing identifiers | Coverage |
+| PDF pages / drawing identifiers | Where explained |
 | --- | --- |
-| CM-00 and CM-01 | General assembly and exploded module arrangement |
-| CM-02 and CM-03 | Made, purchased and reused parts |
-| CM-04 and CM-05 | Base hole layout, structural interfaces and card path |
-| CM-06 | Four rendered views |
-| CM-10, CM-20 and CM-30 | Gearbox, electronics casing and shuffler casing modules |
-| CM-P01 to CM-P09 | Individual base, shell, envelope, plates, gears, roller and motor-pinion sheets |
+| 1-2: CM-00, CM-01 | Overall layout and assembly in Sections 2.11 and 2.13 |
+| 3-4: CM-02, CM-03 | Consolidated structural schedule in Section 2.11; electrical choices in Section 3 |
+| 5-6: CM-04, CM-05 | Mounting and card path in Section 2.12; power transmission in Sections 2.3-2.4 |
+| 7: CM-06 | Alternative rendered views, available in the PDF without duplicating the assembly illustrations |
+| 8-10: CM-10, CM-20, CM-30 | Gearbox, shell and card-path interfaces in Section 2.12 |
+| 11-13: CM-P01 to CM-P03 | Individual base, shell and casing-envelope sheets retained in the PDF; key dimensions consolidated above |
+| 14-19: CM-P04 to CM-P09 | Detailed component sheets; selected drawings reproduced in Section 2.10 |
 
-The 19-page structural drawing PDF supplies the five CM component sheets reproduced in Section 2.10 and complements the two retained GX right-hand plate drawings. Its modelled pinions use profile shifts of +0.5 for Z0 and +0.67 for Z4. These describe the supplied model geometry; they do not replace the earlier requirement to check the physical pinions when manufacturing replacements.
-
-[Download complete STL package](mechanical/full-machine/Card-Machine-3D-STL.zip) · [Open all 19 structural drawing sheets](mechanical/full-machine/Card-Shuffler-Structure-Drawings.pdf) · [Model directory and notes](mechanical/full-machine/README.md)
+[Open the complete 19-page structural drawing document](mechanical/full-machine/Card-Shuffler-Structure-Drawings.pdf). Read stated dimensions, not screen measurements. The modelled pinions use profile shifts of +0.5 for Z0 and +0.67 for Z4; dimensional reference notes remain on the source sheets.
 
 ## 3 Hardware Design
 
