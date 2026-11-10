@@ -90,6 +90,10 @@ Figure P1 Physical wiring and assembly layout. The open electronics compartment 
 
 Figure P2 Construction-stage view with the outer shuffling structure removed. Two DC motors and their gear modules are positioned in the printed base, beside the breadboard and Power Board. This view records component mounting and wiring during assembly rather than a fully enclosed finished object.
 
+![Physical construction with the camera mounted in the white enclosure above the card shuffler](docs/images/physical-object/enclosure-camera-assembly.jpg)
+
+Figure P3 Physical construction with the white enclosure and camera installed above the card-shuffling unit. The open base shows the Uno controller, breadboard, Power Board and wiring during integration. The upper rectangular opening is visible above the camera.
+
 ## 2 Mechanical Design
 
 ### 2.1 Overall Structure and Modifications
@@ -1003,9 +1007,25 @@ The project files document not only the final effect, but also how the design de
 
 ## 10 Group Contributions and References
 
-### 10.1 Group Contributions
+### 10.1 Individual Contributions
 
-The group will confirm members’ contributions to mechanical modifications, enclosure construction, circuitry, programming, training, testing and documentation.
+#### Christina Ren
+
+Christina developed the control code for both prototypes, trained the Wekinator model, and integrated Wekinator, Processing and Arduino so that camera-based classification could trigger actuator actions. She refined the control logic, feeding durations and operating parameters through testing to support the shuffling and recognition modes.
+
+She created physical structure models and carried out 3D printing for both prototypes. She assembled Prototype 2 and connected its circuitry, integrating the mechanical structure, actuators and control system.
+
+Christina tested and debugged both prototypes, checking the relationship between software commands and physical behaviour and documenting operational issues. She completed the project documentation, covering the design process, system architecture, mechanical and circuit descriptions, machine learning training and evaluation, debugging records and project limitations.
+
+#### Albert Phillips
+
+Albert designed and modelled components for the original card-shuffling machine and carried out 3D printing of the housing, base and other assembly parts. He also helped build the second prototype, modelled by Christina, and prepared a component register and assembly guide to support printing and construction.
+
+Albert learned the fundamentals of Arduino and the electronic components, then connected and programmed an LCD screen using an Elegoo Uno R3 for the original design. Through Christina’s explanations of Wekinator training and the Processing code, he developed a better understanding of how software controlled the physical mechanisms and applied this knowledge when assisting with assembly and integration.
+
+#### Robbie Stevens
+
+Robbie adapted the commercial card-shuffling mechanism and developed the initial motor-control code. He assembled the prototype, soldered the circuit and contributed to the machine learning work.
 
 ### 10.2 Software and Hardware References
 
