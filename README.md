@@ -558,35 +558,20 @@ All three stages use /wek/inputs on port 6448 and /wek/outputs at localhost:1200
 
 ### 5.2 Training Data and Model Configuration
 
-The earlier documented training snapshot contained 605 feature-vector examples: 305 ordinary-card examples and 300 all-black-card examples. The Wekinator project supplied on 10 November contains 5,005 feature-vector rows: 2,313 labelled class 1 and 2,692 labelled class 2. These are recorded training vectors, not distinct cards or successful tests. The evaluation below remains a record of the earlier test session; the new training snapshot does not establish a new accuracy result.
+The final model uses Wekinator’s k-Nearest Neighbor classifier (kNN), with the number of neighbours set to **k = 1**. Processing samples the camera image as a 20 × 20 grid and extracts **400 brightness values** as inputs. The model has one classification output with two classes:
+
+- **Class 1: ordinary playing cards**, with 2,313 training examples.
+- **Class 2: the all-black marker card**, with 2,692 training examples.
+
+The training set contains **5,005 examples** in total. Each example represents the brightness features captured from one camera image, rather than a different playing card. Multiple training examples can be collected continuously from the same card.
+
+During training, the corresponding class is selected, ordinary cards or the all-black marker are presented within the camera’s recognition area, and **Start Recording** is clicked to record examples. After collecting data for both classes, **Train** is clicked to train the model, followed by **Run** to produce classification results in real time. Further examples are added and the model is retrained in response to misclassifications observed during testing.
+
+In D mode, class 1 allows the machine to continue feeding cards. Class 2 triggers the final feeding sequence only after Processing confirms at least five consecutive class-2 results over a period of at least 400 milliseconds. This confirmation mechanism reduces false triggers caused by brief classification fluctuations; it does not change the classification results produced by the Wekinator model itself.
 
 ![Report figure 19](docs/images/final-report/figure-19.png)
 
-Figure W4 Updated Wekinator training interface showing 5,005 examples and two classification labels. Model execution was stopped when the screenshot was taken.
-
-1. Fix the camera and recognition area in place.
-
-2. Start Processing and check the image and 400 inputs.
-
-3. Create a project with one output and two classes.
-
-4. Select class 1, show ordinary cards and record examples.
-
-5. Select class 2, show the all-black card and record examples.
-
-6. Click Train, then Run.
-
-7. Check the results using independent new card placements and images.
-
-8. Confirm the class mapping before connecting predictions to motor actions.
-
-#### Classification Algorithm and Configuration
-
-The final model uses Wekinator’s k-Nearest Neighbor classifier (kNN), connected to 400 image-brightness inputs, with one classification output and two classes: class 1 for ordinary cards and class 2 for the all-black marker.
-
-The parameter k is set to 1, so the nearest training example determines the class. Because the output directly uses that example’s label, sample representativeness and incorrect labels affect predictions.
-
-The model classifies by comparing the current input with training examples. This example-based approach suits the interactive training workflow: ordinary-card and marker examples can be recorded separately, tested, and supplemented with additional data.
+Figure W4 Wekinator training interface containing 5,005 training examples and two classification classes. Model execution was stopped when the screenshot was taken.
 
 ![Report figure 20](docs/images/final-report/figure-20.png)
 
