@@ -1025,7 +1025,7 @@ Albert learned the fundamentals of Arduino and the electronic components, then c
 
 #### Robbie Stevens
 
-Robbie adapted the commercial card-shuffling mechanism and developed the initial motor-control code. He assembled the prototype, soldered the circuit and contributed to the machine learning work.
+Robbie adapted the commercial card-shuffling mechanism and developed the initial motor-control code. Robbie also contributed to assembling the prototype and soldering the circuit components. He contributed to the machine learning work.
 
 ### 10.2 Software and Hardware References
 
