@@ -82,6 +82,10 @@ The aesthetic expression therefore comes not only from static appearance, but al
 
 ### 1.4 Physical Object and Construction
 
+![Final assembled Card Magic machine, front view](docs/images/physical-object/final-assembled-machine.jpg)
+
+Figure P0. Final assembled physical object. The front view shows the black base and paired card-loading areas, the central collection opening, and the rounded white enclosure with the integrated 1602 LCD displaying “Stopped”. The closed enclosure conceals the wiring shown in the construction photographs below.
+
 The photographs below document the physical prototype and its construction. The black printed base provides mounting areas for the card-feeding mechanisms and electronics, bringing the mechanical and control components together in one assembly.
 
 ![Updated physical wiring with the Uno, Power Board, two DC motors, camera and LCD](docs/images/physical-object/assembled-wiring.jpg)
