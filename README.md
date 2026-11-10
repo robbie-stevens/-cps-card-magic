@@ -236,49 +236,51 @@ Seven drawings, GX-01 to GX-07, follow in this chapter. They use first-angle pro
 
 ### 2.10 Mechanical Component Engineering Drawings
 
-The following drawings are reproduced from the supplementary mechanical report with their original identifiers, dimensions and technical notes. Page scaling does not preserve the original print scale; use the stated dimensions for manufacturing.
+The complete [19-page structural component drawing document](mechanical/full-machine/Card-Shuffler-Structure-Drawings.pdf) includes the general assembly, exploded view, component lists, base layout, structural description and individual part drawings. Selected sheets are reproduced below with their dimensions and technical notes. Page scaling does not preserve the original print scale; use the stated dimensions for manufacturing.
 
-## GX-01 Feed Roller A
+#### CM-P08 Feed Roller A
 
-![Report figure 5](docs/images/final-report/figure-05.png)
+![CM-P08 Feed Roller A, structural drawing sheet 18](docs/images/final-report/figure-05.png)
 
-Dimensions in mm. Parentheses retain the original reference notation. Read stated dimensions rather than measuring the scaled page.
+Source: complete structural drawing document, page 18. Dimensions in mm; parenthesized dimensions retain the source reference notation.
 
-## GX-02 Idler Gear B
+#### CM-P07 Idler Gear B
 
-![Report figure 6](docs/images/final-report/figure-06.png)
+![CM-P07 Idler Gear B, structural drawing sheet 17](docs/images/final-report/figure-06.png)
 
-Dimensions in mm. Parentheses retain the original reference notation. Read stated dimensions rather than measuring the scaled page.
+Source: complete structural drawing document, page 17. Dimensions in mm; parenthesized dimensions retain the source reference notation.
 
-## GX-03 Compound Gear C
+#### CM-P06 Compound Gear C
 
-![Report figure 7](docs/images/final-report/figure-07.png)
+![CM-P06 Compound Gear C, structural drawing sheet 16](docs/images/final-report/figure-07.png)
 
-Dimensions in mm. Parentheses retain the original reference notation. Read stated dimensions rather than measuring the scaled page.
+Source: complete structural drawing document, page 16. Dimensions in mm; parenthesized dimensions retain the source reference notation.
 
-## GX-04 Motor Side Plate P1-L
+#### CM-P04 Motor Side Plate P1
 
-![Report figure 8](docs/images/final-report/figure-08.png)
+![CM-P04 Motor Side Plate P1, structural drawing sheet 14](docs/images/final-report/figure-08.png)
 
-Dimensions in mm. Parentheses retain the original reference notation. Read stated dimensions rather than measuring the scaled page.
+Source: complete structural drawing document, page 14. Dimensions in mm; parenthesized dimensions retain the source reference notation. The source specifies the left-hand part as drawn and the right-hand part mirrored.
 
-## GX-05 Outer Side Plate P2-L
+#### CM-P05 Outer Side Plate P2
 
-![Report figure 9](docs/images/final-report/figure-09.png)
+![CM-P05 Outer Side Plate P2, structural drawing sheet 15](docs/images/final-report/figure-09.png)
 
-Dimensions in mm. Parentheses retain the original reference notation. Read stated dimensions rather than measuring the scaled page.
+Source: complete structural drawing document, page 15. Dimensions in mm; parenthesized dimensions retain the source reference notation. The source specifies the left-hand part as drawn and the right-hand part mirrored.
 
-## GX-06 Motor Side Plate P1-R
+The following right-hand plate drawings are retained from the supplementary gearbox report to show the right-side geometry explicitly.
 
-![Report figure 10](docs/images/final-report/figure-10.png)
+#### GX-06 Motor Side Plate P1-R
 
-Dimensions in mm. Parentheses retain the original reference notation. Read stated dimensions rather than measuring the scaled page.
+![Right-hand motor side plate P1-R](docs/images/final-report/figure-10.png)
 
-## GX-07 Outer Side Plate P2-R
+Dimensions in mm. Read stated dimensions rather than measuring the scaled page.
 
-![Report figure 11](docs/images/final-report/figure-11.png)
+#### GX-07 Outer Side Plate P2-R
 
-Dimensions in mm. Parentheses retain the original reference notation. Read stated dimensions rather than measuring the scaled page.
+![Right-hand outer side plate P2-R](docs/images/final-report/figure-11.png)
+
+Dimensions in mm. Read stated dimensions rather than measuring the scaled page.
 
 ### 2.11 Complete Machine Layout and Enclosure
 
@@ -356,7 +358,7 @@ The earlier mechanical/models directory remains the detailed single-side gearbox
 | CM-10, CM-20 and CM-30 | Gearbox, electronics casing and shuffler casing modules |
 | CM-P01 to CM-P09 | Individual base, shell, envelope, plates, gears, roller and motor-pinion sheets |
 
-The 19-page structural drawing PDF complements the seven detailed GX gearbox drawings already reproduced in Section 2.10. Its modelled pinions use profile shifts of +0.5 for Z0 and +0.67 for Z4. These describe the supplied model geometry; they do not replace the earlier requirement to check the physical pinions when manufacturing replacements.
+The 19-page structural drawing PDF supplies the five CM component sheets reproduced in Section 2.10 and complements the two retained GX right-hand plate drawings. Its modelled pinions use profile shifts of +0.5 for Z0 and +0.67 for Z4. These describe the supplied model geometry; they do not replace the earlier requirement to check the physical pinions when manufacturing replacements.
 
 [Download complete STL package](mechanical/full-machine/Card-Machine-3D-STL.zip) · [Open all 19 structural drawing sheets](mechanical/full-machine/Card-Shuffler-Structure-Drawings.pdf) · [Model directory and notes](mechanical/full-machine/README.md)
 
