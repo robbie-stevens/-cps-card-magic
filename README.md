@@ -562,7 +562,7 @@ The earlier documented training snapshot contained 605 feature-vector examples: 
 
 ![Report figure 19](docs/images/final-report/figure-19.png)
 
-Figure W4 Training interface showing 605 examples. Model execution was stopped when the screenshot was taken.
+Figure W4 Updated Wekinator training interface showing 5,005 examples and two classification labels. Model execution was stopped when the screenshot was taken.
 
 1. Fix the camera and recognition area in place.
 
