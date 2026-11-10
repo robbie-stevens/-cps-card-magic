@@ -11,6 +11,7 @@
 - [Wekinator project](wekinator/WekinatorProject/WekinatorProject.wekproj)
 - [Runtime quick guide](docs/final-runtime.md)
 - [Download Word report and complete runtime package](docs/downloads/CardMagic_Final_Delivery.zip)
+- [Physical object and construction](#14-physical-object-and-construction)
 - [Mechanical design](#2-mechanical-design)
 - [Hardware design](#3-hardware-design)
 - [Software design](#4-software-design)
@@ -76,6 +77,18 @@ The enclosure does more than cover the mechanism: it organises visual informatio
 Fabrication combines mechanical assembly, enclosure construction and programmable control. The structure and controls are tested separately before integration, allowing feeding rhythm to support camera recognition and revelation. Continuous movement during shuffling contrasts with intermittent feeding during recognition, distinguishing the functions and creating a progression from preparation through anticipation to the reveal.
 
 The aesthetic expression therefore comes not only from static appearance, but also from spatial arrangement, the concealment of technology, and the coordination of movement with on-screen feedback. Materials and fabrication serve the central concept: turning machine learning and physical control into a participatory card magic experience that creates surprise.
+
+### 1.4 Physical Object and Construction
+
+The photographs below document the physical prototype and its construction. The black printed base provides mounting areas for the card-feeding mechanisms and electronics, bringing the mechanical and control components together in one assembly.
+
+![Physical prototype with the controller, breadboard, Power Board and card shuffler connected](docs/images/physical-object/assembled-wiring.jpg)
+
+Figure P1 Physical wiring and assembly layout. The open electronics compartment contains the Elegoo Uno R3, breadboard, school-supplied Power Board and jumper connections. USB cables connect the controller and power supply, while the card-shuffling unit and central card collection area are visible alongside the electronics.
+
+![Construction-stage assembly showing two DC motors, gear modules and the electronics compartment](docs/images/physical-object/construction-stage.jpg)
+
+Figure P2 Construction-stage view with the outer shuffling structure removed. Two DC motors and their gear modules are positioned in the printed base, beside the breadboard and Power Board. This view records component mounting and wiring during assembly rather than a fully enclosed finished object.
 
 ## 2 Mechanical Design
 
@@ -426,7 +439,7 @@ Figure H4 Dual DC motor breadboard wiring. The 9V battery symbol is a power-supp
 
 ### 3.4 Safety and Reliability
 
-Disconnect power before changing wiring and keep the power switch accessible. A software stop is not a physical emergency stop: use the power switch to stop the actuators if the computer, serial connection or program fails. Check the final assembly for wires near gears, unsecured boards or cables, abnormal heating and repeated resets. Photographs of secured wiring and final inspection records remain to be added.
+Disconnect power before changing wiring and keep the power switch accessible. A software stop is not a physical emergency stop: use the power switch to stop the actuators if the computer, serial connection or program fails. Check the final assembly for wires near gears, unsecured boards or cables, abnormal heating and repeated resets. Section 1.4 documents the physical wiring layout and construction stage.
 
 ### 3.5 Supply Capacity and Operating Requirements
 
