@@ -15,6 +15,31 @@
 //   After it finishes, execute THREE new complete 80 ms pulses.
 //   Stop after the third target pulse and send TARGET_DONE.
 
+#include <LiquidCrystal.h>
+// LCD: RS=D12, E=D11, LCD D4=D9, D5=D10, D6=D13, D7=D2.
+LiquidCrystal lcd(12, 11, 9, 10, 13, 2);
+bool thankYouPending = false;
+unsigned long cardShownAt = 0;
+
+void showLCD(char state) {
+  thankYouPending = false;
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  switch (state) {
+    case 'C':
+      lcd.print(F("Enjoy the"));
+      lcd.setCursor(0, 1); lcd.print(F("magic trick")); break;
+    case 'S': lcd.print(F("shuffle")); break;
+    case 'D': lcd.print(F("Wizadry")); break;
+    case 'F':
+      lcd.print(F("Your Card!"));
+      cardShownAt = millis(); thankYouPending = true; break;
+    case 'Y': lcd.print(F("Thank you!")); break;
+    case 'X': lcd.print(F("Stopped")); break;
+    default: lcd.print(F("Welcome!")); break;
+  }
+}
+
 const int speedPin1 = 5;
 const int dir1A = 4;
 const int dir1B = 3;
@@ -85,6 +110,8 @@ void setup() {
   pinMode(dir2B, OUTPUT);
 
   stopAll();
+  lcd.begin(16, 2);
+  showLCD('R');
 
   // Motor 1 is the physical LEFT motor. Its direction has been reversed
   // from the previous firmware as requested.
@@ -106,6 +133,8 @@ void loop() {
 
     if (command == 'H') {
       lastContact = millis();
+      Serial.print(F("PONG "));
+      Serial.println(mode);
     }
     else if (command == '?') {
       printReady();
@@ -113,7 +142,11 @@ void loop() {
     }
     else if (command == 'X') {
       stopAll();
+      showLCD('X');
       Serial.println(F("STOPPED"));
+    }
+    else if (command == 'C') {
+      if (mode == 'X') showLCD('C');
     }
     else if (command == 'S' || command == 'D') {
       if (mode != 'X') {
@@ -134,6 +167,7 @@ void loop() {
         analogWrite(speedPin2, 0);
 
         Serial.println(F("SHUFFLING"));
+        showLCD('S');
         Serial.println(F("INFO SHUFFLE_MOTOR1_ON"));
       }
       else {
@@ -144,6 +178,7 @@ void loop() {
         analogWrite(speedPin2, 0);
 
         Serial.println(F("SCANNING"));
+        showLCD('D');
       }
     }
     else if (command == 'T' && mode == 'D' && !targetLatched) {
@@ -158,9 +193,11 @@ void loop() {
   }
 
   unsigned long now = millis();
+  if (thankYouPending && now - cardShownAt >= 5000UL) showLCD('Y');
 
   if (mode != 'X' && now - lastContact > LINK_TIMEOUT_MS) {
     stopAll();
+    showLCD('X');
     Serial.println(F("FAULT LINK_TIMEOUT"));
     return;
   }
@@ -189,6 +226,7 @@ void loop() {
 
       if (targetPulsesRemaining == 0) {
         stopAll();
+        showLCD('F');
         Serial.println(F("TARGET_DONE"));
       }
     }

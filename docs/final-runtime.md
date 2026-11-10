@@ -1,41 +1,41 @@
-# Final runtime guide
+# Current runtime guide — 10 November 2026
 
-## Files
+## Authoritative files
 
-- [Arduino source](../arduino/TwoDC/TwoDC.ino)
-- [Processing source](../processing/ExternalCamera_Control_v2/ExternalCamera_Control_v2.pde)
-- [Wekinator project](../wekinator/WekinatorProject/WekinatorProject.wekproj)
-- [Saved model](../wekinator/WekinatorProject/current/models/model0.xml)
-- [Complete English report and source package](downloads/CardMagic_Final_Delivery.zip)
+- [Arduino source](../arduino/TwoDC/TwoDC.ino): supplied 1110ArduinoNew.ino, stored under the existing repository sketch name.
+- [Processing source](../processing/ExternalCamera_Control_v2/ExternalCamera_Control_v2.pde): supplied sketch_1110Processing_New.pde, stored under the existing repository sketch name.
+- [Wekinator project](../wekinator/WekinatorProject/WekinatorProject.wekproj): supplied 1110WekinatorNew/WekinatorProject, including all five project, configuration, training and model files.
 
-The supplied final source is retained without behavioural edits. Extract the complete package to use the Word report's relative source hyperlinks. GitHub links on this page open the repository files directly.
+All seven supplied files are retained byte-for-byte. This update does not establish successful compilation or physical verification. Download the current repository with Code → Download ZIP. The older [Word-report package](downloads/CardMagic_Final_Delivery.zip) is a historical snapshot and contains older code; it is not the current runtime download.
 
 ## Startup
 
-1. Upload TwoDC.ino to Arduino Uno R3. Close Serial Monitor.
-2. Open the Wekinator project, keeping its inputConfig.xml, outputConfig.xml and current folder together.
-3. In Processing, install Video and oscP5; Serial is bundled. Set ARDUINO_PORT to the actual USB port and verify CAMERA_INDEX (currently 1).
-4. Run the Processing sketch. Wait for READY and live camera frames, then press C to confirm the camera.
-5. Click Run in Wekinator. Focus Processing before using keyboard commands.
+1. Upload TwoDC.ino to the Uno R3 and close Serial Monitor. The same Uno controls both DC motors and the LCD.
+2. Keep the complete WekinatorProject directory together and open WekinatorProject.wekproj.
+3. Install Processing Video and oscP5; Serial is bundled. Check ARDUINO_PORT (supplied value /dev/cu.usbmodem21201).
+4. Check CAMERA_INDEX (supplied value 1). This is an AVFoundation numeric index, NOT a permanent webcam binding. Confirm the actual live preview after reconnecting devices.
+5. Run Processing, wait for Connected and STOPPED, then press C. Click Run in Wekinator.
 
-## Controls
+## Controls and detection
 
 | Key | Action |
 |---|---|
-| S | Start motor 1 immediately and motor 2 after 600 ms; both continue |
-| D | Motor 1 runs 80 ms on and 1000 ms off; motor 2 remains off |
-| X or Esc | Stop and clear the current sequence |
-| C | Confirm the live camera |
-| T | Simulate class 2 during scanning |
+| C | Confirm camera; when stopped, display Enjoy the / magic trick on LCD |
+| S | Start motor 1, then motor 2 after 600 ms; continuous shuffling |
+| D | Motor 1 ON 80 ms / OFF 1000 ms; motor 2 off; LCD Wizadry |
+| X / Esc | Request stop; wait for STOPPED before restarting |
+| R | Request stop and reopen serial; never resume motion automatically |
 
-Press X and wait for STOPPED before switching modes. Class 1 continues feeding. Class 2 sends T once: Arduino finishes any current pulse without counting it, then executes three new complete 80 ms pulses and returns TARGET_DONE. Processing then displays "this is your card". Three pulses are feeding distance, not three cards.
+There is no keyboard T simulation. During D, detection first requires at least 3 consecutive class-1 results over 200 ms. Once armed, class 2 requires at least 5 consecutive results over 400 ms; class 1 or a prediction gap above 250 ms resets a marker candidate. A stable but incorrect class-2 prediction can still trigger the machine.
 
-## Communication
+After a confirmed marker, Processing sends internal serial T once. Arduino excludes the current pulse, executes three new complete 80 ms pulses separated by 1000 ms, stops and returns TARGET_DONE. Only then does Processing show this is your card. LCD shows Your Card!, then Thank you! after 5 seconds. Three pulses represent feed distance, not three cards.
 
-Serial is 9600 baud. Processing samples 400 brightness values every 100 ms and sends /wek/inputs to port 6448. Wekinator sends one classification output to localhost:12000 at /wek/outputs. Class 1 is ordinary cards; class 2 is the black marker. Heartbeats are sent every 500 ms; Arduino stops after 3000 ms without contact. Scanning requests a stop after 2000 ms without camera frames.
+## Pins
 
-## Interface wording
+Motor 1: PWM D5, direction D4/D3. Motor 2: PWM D6, direction D7/D8. LCD: RS D12, E D11, D4 D9, D5 D10, D6 D13, D7 D2. Preserve the verified LCD power, contrast and RW wiring as well as motor-driver power wiring.
 
-Some Processing messages still say "final pulse" and include an older FINAL_PULSE handler. Arduino sends TARGET_PULSE 1/3, 2/3 and 3/3, then TARGET_DONE. The actual sequence has three pulses. The saved source is not silently changed to match these older display strings.
+## Communication and recovery
 
-No physical hardware test was performed as part of this repository update.
+Serial is 9600 baud. The serial worker sends H every 500 ms; Arduino replies PONG plus its current mode. Processing requests a stop and reconnects after 2 seconds without valid board replies. The board retains its 3-second contact watchdog. A main control-loop stall above 2.5 seconds also requests a stop. Restoring a connection requires confirmed STOPPED and a new S/D command. Software reconnection does not repair supply, driver, USB or wiring faults, and is not a physical emergency stop.
+
+Camera frames are sampled as 400 brightness values every 100 ms, sent to /wek/inputs on port 6448. Wekinator sends one classification output to localhost:12000 at /wek/outputs. Class 1 is ordinary cards; class 2 is the black marker. The supplied kNN model uses k=1. currentData.arff contains 5,005 training vectors (2,313 class 1 and 2,692 class 2); these are not independent evaluation trials.

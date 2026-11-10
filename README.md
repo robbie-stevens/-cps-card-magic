@@ -10,7 +10,7 @@
 - [Final Processing source](processing/ExternalCamera_Control_v2/ExternalCamera_Control_v2.pde)
 - [Wekinator project](wekinator/WekinatorProject/WekinatorProject.wekproj)
 - [Runtime quick guide](docs/final-runtime.md)
-- [Download Word report and complete runtime package](docs/downloads/CardMagic_Final_Delivery.zip)
+- [Download earlier Word-report package (not the current runtime)](docs/downloads/CardMagic_Final_Delivery.zip)
 - [Physical object and construction](#14-physical-object-and-construction)
 - [Mechanical design](#2-mechanical-design)
 - [Hardware design](#3-hardware-design)
@@ -19,6 +19,8 @@
 - [Debugging and iteration](#6-debugging-and-iteration)
 - [Limitations](#7-limitations)
 - [Installation and operation](#8-software-installation-and-operation)
+
+> **Runtime update — 10 November 2026:** The linked Arduino, Processing and Wekinator files have been replaced with the supplied 1110ArduinoNew, sketch_1110Processing_New and 1110WekinatorNew snapshots. Use the [current runtime guide](docs/final-runtime.md). The earlier Word-report download is a historical snapshot and does not contain this runtime update.
 
 ## 1 Project Overview
 
@@ -522,7 +524,7 @@ X stops both motors and clears the current sequence without automatic resumption
 
 ### 4.4 Fault Handling
 
-Processing sends a heartbeat every 500 ms. Arduino stops after 3 seconds without contact. In D mode, Processing requests a stop if the camera provides no new frames for 2 seconds. If images and serial communication remain active but Wekinator stops classifying, the system does not currently stop solely because predictions are missing. Software protection and actual mechanical stopping response should be verified separately.
+A dedicated serial worker sends H every 500 ms and receives PONG with the Arduino mode. After 2 seconds without valid board replies, Processing requests a stop and reopens the serial connection. Arduino retains its 3-second contact watchdog. A host control-loop stall longer than 2.5 seconds also requests a stop. Recovery requires a confirmed STOPPED and a new user start command; motion never resumes automatically. Camera-frame freshness alone no longer stops motion. Missing classification results reset detection candidates but do not alone stop feeding.
 
 ## 5 Machine Learning Design and Training
 
@@ -556,7 +558,7 @@ All three stages use /wek/inputs on port 6448 and /wek/outputs at localhost:1200
 
 ### 5.2 Training Data and Model Configuration
 
-The final project contains 605 feature-vector examples: 305 ordinary-card examples and 300 all-black-card examples. These are not 605 different cards or 605 successful tests.
+The earlier documented training snapshot contained 605 feature-vector examples: 305 ordinary-card examples and 300 all-black-card examples. The Wekinator project supplied on 10 November contains 5,005 feature-vector rows: 2,313 labelled class 1 and 2,692 labelled class 2. These are recorded training vectors, not distinct cards or successful tests. The evaluation below remains a record of the earlier test session; the new training snapshot does not establish a new accuracy result.
 
 ![Report figure 19](docs/images/final-report/figure-19.png)
 
@@ -804,7 +806,7 @@ Likewise, an observed ordinary-card false-positive rate of 0% does not guarantee
 
 ### 7.7 Communication Protection Does Not Replace Physical Stopping
 
-The system relies on the computer for image capture, Wekinator and Processing, with a serial connection to Arduino. Heartbeat-timeout stopping and the D-mode camera-frame timeout cover some faults, but not all.
+The system relies on the computer for image capture, Wekinator and Processing, with a serial connection to Arduino. Heartbeat-timeout stopping, bidirectional reply monitoring and serial reconnection cover some faults, but not all.
 
 For example, if camera and serial communication remain active while Wekinator stops producing predictions, missing classification output alone does not currently stop the machine. Software stopping also does not replace physical power isolation; the power switch must remain accessible.
 
@@ -935,7 +937,7 @@ Press X for a normal stop. Before restarting, check the mechanism and card state
 
 If the keyboard or interface cannot stop the motors, use the power switch to disconnect actuator power. At shutdown, stop the motors and turn off actuator power before exiting Processing, stopping Wekinator and disconnecting equipment.
 
-Processing sends regular heartbeats; Arduino stops outputs after more than 3 seconds without contact. In D mode, the computer requests a stop after 2 seconds without new camera frames. These protections address some communication failures and do not replace a directly accessible power switch.
+Processing sends regular heartbeats and monitors PONG replies; Arduino stops outputs after more than 3 seconds without contact. Processing requests a stop and reconnects after missing board replies, and requires a new user start after recovery. These protections do not replace a directly accessible power switch.
 
 ## 9 Project Files and Digital Resources
 
@@ -961,7 +963,7 @@ The final source files are supplied with this report in the accompanying deliver
 
 [Open package README](docs/final-runtime.md)
 
-The source links above open the final repository files. For offline use, [download and extract the complete report and runtime package](docs/downloads/CardMagic_Final_Delivery.zip), retaining its folder structure. Links open files; they do not start the machine.
+The source links above open the current repository files. For offline use, download the current repository through GitHub's Code → Download ZIP. The [earlier report package](docs/downloads/CardMagic_Final_Delivery.zip) is retained as a historical report snapshot and contains older runtime files; do not use it to obtain the current code. Links open files; they do not start the machine.
 
 Arduino entry point: arduino/TwoDC/TwoDC.ino. Upload this sketch to Arduino Uno R3. It controls both DC motors through the L293D at 9600 baud. Motor 1 uses PWM D5 and direction D4/D3; motor 2 uses PWM D6 and direction D7/D8.
 
@@ -969,19 +971,19 @@ Processing entry point: processing/ExternalCamera_Control_v2/ExternalCamera_Cont
 
 Wekinator entry point: wekinator/WekinatorProject/WekinatorProject.wekproj. Keep inputConfig.xml, outputConfig.xml and the current subfolder together. The supplied project also includes current/models/model0.xml and current/currentData.arff. These are runtime model and training resources, not Arduino or Processing source files.
 
-Before starting, change ARDUINO_PORT in Processing to the port shown on the current computer. The supplied value is /dev/cu.usbmodem11201. CAMERA_INDEX is currently 1 and selects the AVFoundation device index through a macOS capture pipeline. Check the live preview rather than assuming this index identifies the same camera on every computer.
+Before starting, change ARDUINO_PORT in Processing to the port shown on the current computer. The supplied value is /dev/cu.usbmodem21201. CAMERA_INDEX is currently 1 and selects the AVFoundation device index through a macOS capture pipeline. Check the live preview rather than assuming this index identifies the same camera on every computer.
 
 Open TwoDC.ino and upload it, then close Arduino Serial Monitor. Open the Wekinator project. Run the Processing sketch, wait for the Arduino READY handshake and an updating camera preview, and press C to confirm the selected camera. Click Run in Wekinator, then focus the Processing window for keyboard control.
 
 S starts shuffling: motor 1 starts immediately and motor 2 starts 600 ms later. Both continue until X or a communication timeout. D starts left-only recognition feeding: motor 1 runs for 80 ms and stops for 1000 ms repeatedly; motor 2 remains off. Both modes use PWM 255. Press X and wait for STOPPED before changing modes. X or Esc requests a stop and clears the current sequence.
 
-Wekinator receives /wek/inputs on port 6448 and sends one classification value through /wek/outputs to localhost port 12000. Class 1 represents ordinary cards and leaves D-mode feeding unchanged. Class 2 represents the all-black marker. Predictions are accepted for triggering only during scanning, after the initial 300 ms scan window. T can simulate a marker event while scanning.
+Wekinator receives /wek/inputs on port 6448 and sends one classification value through /wek/outputs to localhost port 12000. Class 1 represents ordinary cards and leaves D-mode feeding unchanged. Class 2 represents the all-black marker. Detection is armed after at least three consecutive class-1 results spanning 200 ms. A marker then requires at least five consecutive class-2 results spanning 400 ms, with no gap above 250 ms. The keyboard T simulation has been removed; T remains the internal serial marker command. R requests serial reconnection without automatic motion restart.
 
 For an accepted marker event, Processing sends T once. Arduino does not count or extend a pulse already in progress. Starting with the next OFF-to-ON transition, it executes three new complete 80 ms pulses, separated by the normal off-time, then disables the motors and sends TARGET_DONE. Only then does Processing display “this is your card”. Three pulses provide feed distance and do not mean three cards.
 
-Processing sends heartbeat H every 500 ms. Arduino stops after more than 3000 ms without contact. During scanning, Processing requests a stop if no camera frame arrives for 2000 ms. These functions do not confirm physical card movement or replace the accessible power switch.
+Processing sends heartbeat H every 500 ms and Arduino replies PONG. Arduino stops after more than 3000 ms without contact. Processing requests a stop and reconnects after 2000 ms without valid replies; it also requests a stop if its main control loop is unresponsive for more than 2500 ms. Camera-frame loss alone does not stop the machine. These functions do not confirm physical card movement or replace the accessible power switch.
 
-The supplied Processing interface retains some singular “final pulse” messages and a FINAL_PULSE handler from an earlier version. The final Arduino sketch actually sends TARGET_PULSE 1/3, 2/3 and 3/3, followed by TARGET_DONE. Its three-pulse sequence is the authoritative behaviour; the singular interface wording does not change motor operation. The source files have not been modified in this documentation update.
+The supplied Arduino sketch sends TARGET_PULSE 1/3, 2/3 and 3/3, followed by TARGET_DONE. The single Uno also controls the LCD: C displays “Enjoy the / magic trick”, S displays “shuffle”, D displays “Wizadry”, and completion displays “Your Card!” followed by “Thank you!” after 5 seconds. LCD signal pins are RS D12, E D11, D4 D9, D5 D10, D6 D13 and D7 D2. The source snapshots were uploaded without behavioural edits; repository sketch filenames are retained for existing links.
 
 ### 9.3 Mechanical and Circuit Resources
 
