@@ -6,7 +6,7 @@
 - [Processing source](../processing/ExternalCamera_Control_v2/ExternalCamera_Control_v2.pde): supplied sketch_1110Processing_New.pde, stored under the existing repository sketch name.
 - [Wekinator project](../wekinator/WekinatorProject/WekinatorProject.wekproj): supplied 1110WekinatorNew/WekinatorProject, including all five project, configuration, training and model files.
 
-All seven supplied files are retained byte-for-byte. This update does not establish successful compilation or physical verification. Download the current repository with Code → Download ZIP. Earlier packages are isolated under [Historical resources](history/README.md) and are not current runtime downloads.
+All seven supplied files are retained byte-for-byte. Download the current repository with Code → Download ZIP. Earlier packages are isolated under [Historical resources](history/README.md) and are not current runtime downloads.
 
 ## Startup
 
