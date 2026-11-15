@@ -971,15 +971,13 @@ The GitHub repository provides a single entry point for the project. README.md i
 
 ### 9.1 Documentation Entry Point
 
-Project repository: https://github.com/robbie-stevens/-cps-card-magic
+[README.md](README.md) is the entry point for the [project repository](https://github.com/robbie-stevens/-cps-card-magic). It contains the project concept, user journey, mechanical and hardware design, software architecture, machine learning training and evaluation, debugging record, limitations, operating instructions and individual contributions.
 
-README.md serves as the report entry point, summarising the project purpose, user journey, system architecture and startup procedure. Longer mechanical analyses, machine learning evaluations and debugging records can be presented on separate Markdown pages linked from the README.
-
-Source code does not need to be pasted in full into the README. It should be stored as separate files in the repository and linked from the relevant instructions, making it easier to read, download, run and maintain.
+The navigation links connect the report to the current source files, runtime guide, mechanical models, drawings and photographs. The supplementary Markdown pages provide runtime instructions and model-specific notes; the circuit and debug index pages link back to the corresponding report sections.
 
 ### 9.2 Source Code and Runtime Resources
 
-The final source files are supplied with this report in the accompanying delivery folder. The Arduino and Processing sources are preserved exactly as supplied. Full source code is provided as separate executable files rather than pasted into the report.
+The current Arduino and Processing source files are stored in the repository alongside the Wekinator project. The source files are available through the links below.
 
 [Open Arduino source](arduino/TwoDC/TwoDC.ino)
 
@@ -987,7 +985,7 @@ The final source files are supplied with this report in the accompanying deliver
 
 [Open Wekinator project](wekinator/WekinatorProject/WekinatorProject.wekproj)
 
-[Open package README](docs/final-runtime.md)
+[Open current runtime guide](docs/final-runtime.md)
 
 The source links above open the current repository files. For offline use, download the current repository through GitHub's Code → Download ZIP. Older packages are separated under [Historical resources](docs/history/README.md) and are excluded from current-code download instructions. Links open files; they do not start the machine.
 
@@ -1013,23 +1011,37 @@ The supplied Arduino sketch sends TARGET_PULSE 1/3, 2/3 and 3/3, followed by TAR
 
 ### 9.3 Mechanical and Circuit Resources
 
-Mechanical resources include the single-side gearbox STL models, assembly renders, mechanical structure report and engineering drawings GX-01 to GX-07. Models show component and assembly relationships; drawings explain dimensions, gear parameters and structural details. Reference-dimension notation should be retained, and stated dimensions and technical notes should be used rather than measurements taken from a scaled page.
+The mechanical resources include the [single-side gearbox models](mechanical/models/README.md), [complete-machine models and structural drawings](mechanical/full-machine/README.md), assembly renders and individual component engineering sheets. Section 2 explains their dimensions, transmission, structural interfaces and assembly sequence. The drawings retain their reference-dimension notation; stated dimensions and technical notes define the geometry rather than measurements from a scaled page.
 
-Circuit resources include the dual DC motor schematic, breadboard wiring diagram, Arduino-to-L293D pin mapping, and Power Board and power bank documentation. The 9V battery in the simulator is a supply placeholder. Captions should clearly state that the physical machine uses the school-supplied Power Board and power bank so that the symbol is not mistaken for the actual supply voltage.
+The circuit resources include the dual DC motor schematic, breadboard wiring diagram, Arduino-to-L293D pin mapping, LCD signal mapping, and Power Board and power bank information in Section 3. The 9V battery symbol in the simulator is an external-supply placeholder only. The physical machine uses the school-supplied Power Board and ANSMANN power bank, not a 9V battery.
+
+The physical photographs in Section 1.4 show the completed enclosure and the circuit and mechanism integration during construction.
 
 ### 9.4 Testing and Debugging Records
 
-The machine learning evaluation records test conditions, sample counts, predictions, metric calculations and analysis, separately from whole-machine operating results.
+Section 5.4 records 60 independent classifier-validation trials, including the test conditions, prediction counts, confusion matrix, calculated metrics and results analysis. These validation trials are distinct from the 5,005 recorded training examples and from physical card-delivery outcomes.
 
-The Debug Log records symptoms, investigations, modifications and current status. It should distinguish code changes from physical verification, and resolved issues from remaining limitations.
+Section 6 documents observed faults, investigations and changes involving motors, feeding, serial communication, camera capture and classification integration. Section 7 records the remaining mechanical, recognition and communication limitations, including the distinction between completion of a control sequence and successful delivery of the selected card.
 
 ### 9.5 File Organisation and Version Consistency
 
-For final submission, the README, source code, wiring instructions and test records should refer to the same operating version. Motor types, pins, communication parameters, feeding durations and final pulse counts should be consistent across these resources.
+The repository separates current runtime files, supporting documentation and mechanical resources by function:
 
-Images and documents should have clear filenames and use repository-relative links rather than local paths that work only on one person’s computer. External documentation, software libraries and adapted code sources should be listed together in the references.
+| Location | Contents |
+| --- | --- |
+| `README.md` | Main project report and navigation |
+| `arduino/TwoDC/` | Current Uno motor and LCD control sketch |
+| `processing/ExternalCamera_Control_v2/` | Current camera, classification, keyboard and serial-control sketch |
+| `wekinator/WekinatorProject/` | Wekinator project, configuration, training data and model |
+| `docs/final-runtime.md` | Current startup and operating guide |
+| `docs/images/` | Report figures, engineering sheets and physical photographs |
+| `mechanical/models/` | Detailed single-side gearbox resources |
+| `mechanical/full-machine/` | Complete-machine model package and structural drawing set |
+| `docs/history/` | Archived earlier package, excluded from current runtime instructions |
 
-The project files document not only the final effect, but also how the design developed, how the system operates and which aspects have been tested.
+Current source and operating instructions describe the dual-DC-motor Uno version with the integrated LCD. Repository-relative links connect the report to its supporting files. Section 10 lists the software, library, hardware and project-mechanical references.
+
+The homepage links and current runtime guide identify the active source files. The earlier package is explicitly labelled as historical and is not the current-code download.
 
 ## 10 Group Contributions and References
 
