@@ -10,7 +10,7 @@
 - [Final Processing source](processing/ExternalCamera_Control_v2/ExternalCamera_Control_v2.pde)
 - [Wekinator project](wekinator/WekinatorProject/WekinatorProject.wekproj)
 - [Runtime quick guide](docs/final-runtime.md)
-- [Download earlier Word-report package (not the current runtime)](docs/downloads/CardMagic_Final_Delivery.zip)
+- [Download current source and resources](https://github.com/robbie-stevens/-cps-card-magic/archive/refs/heads/main.zip)
 - [Physical object and construction](#14-physical-object-and-construction)
 - [Mechanical design](#2-mechanical-design)
 - [Hardware design](#3-hardware-design)
@@ -20,7 +20,7 @@
 - [Limitations](#7-limitations)
 - [Installation and operation](#8-software-installation-and-operation)
 
-> **Runtime update — 10 November 2026:** The linked Arduino, Processing and Wekinator files have been replaced with the supplied 1110ArduinoNew, sketch_1110Processing_New and 1110WekinatorNew snapshots. Use the [current runtime guide](docs/final-runtime.md). The earlier Word-report download is a historical snapshot and does not contain this runtime update.
+> **Runtime update — 10 November 2026:** The linked Arduino, Processing and Wekinator files have been replaced with the supplied 1110ArduinoNew, sketch_1110Processing_New and 1110WekinatorNew snapshots. Use the [current runtime guide](docs/final-runtime.md). Use the linked source files or download the current main branch. Earlier packages are isolated in the historical archive and are not current runtime resources.
 
 ## 1 Project Overview
 
@@ -405,6 +405,7 @@ Hardware selection addresses two tasks: continuous operation of both sides durin
 | L293D motor driver | Interface Arduino control signals with the motors | Two H-bridges control two DC motors independently, keeping motor current out of Arduino output pins and supporting direction and enable control |
 | Two single-side gear modules | Transfer motor rotation to the feeding mechanism | Compact transmission fits the two side spaces; independent modules simplify assembly and testing |
 | Feed contact wheels and surfaces | Use friction to move cards towards the centre | Convert rotation into linear feeding through card contact; contact, separator clearance and stack pressure must be tuned together |
+| 1602 character LCD | Display welcome, operating and reveal states | Provides local feedback on the same Uno, so users can see the machine state without relying only on the computer window |
 | Camera | Capture images of cards in the recognition area | Non-contact visual input without electronics attached to ordinary cards; the computer processes images to distinguish ordinary cards from the marker |
 | All-black marker card | Provide a distinct recognition target | Strong visual contrast simplifies the task to two classes; adjacency locates the selected card without identifying every card |
 | School-supplied Power Board | Introduce and distribute USB power | Provides accessible supply connections and a power switch for prototyping and staged testing |
@@ -445,6 +446,24 @@ The dual-motor layout supports familiar two-sided shuffling and single-sided rec
 | GND | 4, 5, 12, 13 | Common ground |
 
 L293D pins 3 and 6 connect to motor 1; pins 11 and 14 connect to motor 2. Pin 8 connects to the positive external motor supply. The supply negative shares ground with Arduino GND.
+
+#### LCD Display Interface
+
+The LCD is the 16-column, 2-row display mounted in the white enclosure; it is separate from the L293D motor-driver chip. The same Uno runs the motors and the display using `LiquidCrystal lcd(12, 11, 9, 10, 13, 2)` in 4-bit mode.
+
+| 1602 LCD signal | Uno pin |
+| --- | --- |
+| RS | D12 |
+| E | D11 |
+| LCD D4 | D9 |
+| LCD D5 | D10 |
+| LCD D6 | D13 |
+| LCD D7 | D2 |
+
+LCD D4-D7 are display data-signal names, not the Uno pin numbers. The display also requires its power, common-ground, contrast, RW and backlight connections; those are not defined by the constructor above. The signal table documents the final code, while the existing circuit figures show the dual-motor circuit rather than a complete LCD wiring schematic. Photograph P1 records the integrated display.
+
+When stopped, C displays “Enjoy the / magic trick”. S displays “shuffle”, D displays “Wizadry”, and final feeding completion displays “Your Card!” followed by “Thank you!” after five seconds. X displays “Stopped”.
+
 
 ### 3.3 Power Supply and Circuit Diagrams
 
@@ -623,7 +642,7 @@ Jokers differ less strongly from ordinary cards than the black marker does, so o
 
 ### 5.4 Machine Learning Performance Evaluation
 
-The final binary model was independently tested under practical operating conditions. It uses 400 brightness inputs and kNN with k = 1, assigning class 1 to ordinary cards and class 2 to the all-black marker.
+The trained binary classifier was evaluated in 60 independent validation trials under practical operating conditions. These 60 trials are evaluation presentations, not the 5,005 feature-vector examples used for training. It uses 400 brightness inputs and kNN with k = 1, assigning class 1 to ordinary cards and class 2 to the all-black marker.
 
 #### Test Method
 
@@ -803,7 +822,7 @@ The final model uses 400 brightness inputs and kNN with k = 1. These features su
 
 The only classification error in Section 5.4 occurred under changed lighting: a marker was classified as an ordinary card. This suggests adding examples under varied lighting, although the test alone does not establish the specific cause of that error.
 
-With k = 1, the nearest training example directly determines the output. Sample coverage and labelling quality therefore matter. A single classification currently triggers the event without multiframe agreement, so an occasional false prediction may directly initiate final feeding.
+With k = 1, the nearest training example directly determines the output. Sample coverage and labelling quality therefore matter. The final Processing code uses multiframe confirmation rather than triggering from a single prediction. Detection is first armed by at least three consecutive class-1 results spanning at least 200 ms. Once armed, a marker requires at least five consecutive class-2 results spanning at least 400 ms, with no result gap above 250 ms. A class-1 result or an excessive gap resets the marker candidate. Accepted detection is latched once per scan, preventing repeated predictions from restarting final feeding. This filters brief fluctuations, but a sustained incorrect class-2 output can still satisfy the conditions and trigger an early reveal.
 
 ### 7.5 The Trick Depends on Card Order
 
@@ -886,33 +905,29 @@ The 400 inputs correspond to the brightness values sampled from a 20 × 20 grid 
 
 ### 8.4 Startup and Pre Run Checks
 
-1. Check motor, supply and common-ground connections. Keep wiring out of gears and the feeding path.
+1. Check the motor, display, supply and common-ground wiring. Keep cables clear of gears and leave the actuator power switch accessible.
+2. Upload the final Arduino sketch if needed, then close Serial Monitor and any other serial-control program.
+3. Open the supplied trained Wekinator project. Check the serial port and camera index in Processing as described in Section 8.3.
+4. Run Processing and wait for **Connected** and a confirmed **STOPPED** state. Check the live preview to ensure it is the intended camera.
+5. Focus the Processing window and press **C**. At least one camera frame must have arrived; C confirms the preview for recognition mode and sends the LCD welcome command when the controller is ready and stopped.
+6. Click **Run** in Wekinator. While motors remain stopped, show ordinary cards and the black marker separately to check classes 1 and 2.
+7. Return focus to Processing. On first connection or after wiring changes, perform an unloaded check, followed by a small-stack feeding test.
 
-2. Check for mechanical interference and ensure that the power switch is accessible.
-
-3. Open the trained Wekinator project.
-
-4. Start Processing and confirm the Arduino connection and updating camera image.
-
-5. Click Run in Wekinator.
-
-6. Show ordinary cards and the marker separately and check that outputs correspond to classes 1 and 2.
-
-7. Select the Processing control window before using the keyboard.
-
-On first connection or after wiring changes, test without cards first. Then use a small number of cards to check actual feeding direction and stopping response.
+S and D are accepted only when the connection is ready, STOPPED has been confirmed, and no command acknowledgement is pending. D additionally requires camera confirmation with C. Reconnection never resumes motion automatically.
 
 ### 8.5 Keyboard Controls
 
 | Key | Function | Machine behaviour |
 | --- | --- | --- |
-| S | Start shuffling | Motor 1 starts, followed by motor 2 after 600 ms; both feed continuously |
-| D | Start recognition feeding | Right motor stops; left motor cycles through 80 ms on and 1000 ms off |
-| X | Stop the current run | Stop both motors and clear the current sequence |
+| C | Confirm live camera / welcome | Confirms a received camera image; when ready and stopped, LCD shows “Enjoy the / magic trick” |
+| S | Start shuffling | Motor 1 starts immediately, motor 2 after 600 ms; both continue |
+| D | Start recognition | Left motor ON 80 ms / OFF 1000 ms; right motor remains off; requires C confirmation |
+| X / Esc | Request stop | Stops outputs and clears the sequence; wait for STOPPED before restarting |
+| R | Reconnect | Requests a stop and reopens serial; requires a new user start after synchronisation |
 
-These are computer keyboard keys, not entries in Wekinator. Click the Processing control window before pressing them.
+Use the computer keyboard with the Processing window focused. There is no keyboard T simulation; T is an internal marker command sent by Processing.
 
-To switch between shuffling and recognition, press X first, then S or D. X ends and clears the sequence; it is not a pause that preserves progress. Starting again begins a new run.
+To switch modes, press X, wait for STOPPED, then press S or D. X clears progress rather than preserving a paused sequence. If acknowledgement is missing, the interface locks motion and attempts reconnection. Use the physical power switch if software cannot stop the machine.
 
 ### 8.6 Shuffling
 
@@ -933,20 +948,14 @@ Shuffle mode does not use predictions to trigger final feeding. If double feedin
 Complete selection, return and cutting as described in Section 1.2, maintaining adjacency between the selected card and marker. Then:
 
 1. Place the full deck in the left hopper, leaving the right empty.
+2. Wait for Connected and STOPPED, check the live camera preview, and press C if it has not been confirmed in this Processing session. Ensure Wekinator is running.
+3. Focus Processing and press D. Arduino replies SCANNING; the left motor begins its 80 ms on / 1000 ms off cycle and the LCD displays “Wizadry”.
+4. Stable ordinary-card output arms marker detection: at least three consecutive class-1 results spanning 200 ms. Until then, class 2 does not trigger final feeding.
+5. Once armed, at least five consecutive class-2 results spanning 400 ms confirm the marker, provided no interval exceeds 250 ms. Class 1 or an excessive gap resets the marker candidate.
+6. Processing sends T once. Arduino finishes any pulse already in progress without counting it, then executes three new complete feeding pulses starting at the next OFF-to-ON transition.
+7. After the third pulse, Arduino disables both motors, sends TARGET_DONE and displays “Your Card!” on the LCD. Processing displays “this is your card”; after five seconds the LCD changes to “Thank you!”.
 
-2. Confirm that the camera image is updating and Wekinator is running.
-
-3. Click the Processing window and press D.
-
-4. The left motor begins intermittent feeding. Class 1 leaves the cycle unchanged.
-
-5. Class 2 latches one marker event without repeated triggering.
-
-6. Starting with the next complete pulse, execute three additional feeding pulses and stop.
-
-7. After Arduino returns TARGET_DONE, the computer displays “this is your card”.
-
-The message confirms completion of the programmed feeding sequence. Observe whether the selected card has actually been delivered fully. If double feeding or a jam occurs, stop and reorganise the deck; do not treat the screen message as confirmation of successful physical delivery.
+The message reports completion of the programmed sequence, not measured card delivery. Observe the actual selected card; stop and reorganise the deck if double feeding or a jam occurs. Press X to clear a run before starting another mode.
 
 ### 8.8 Stopping and Shutdown
 
@@ -980,7 +989,7 @@ The final source files are supplied with this report in the accompanying deliver
 
 [Open package README](docs/final-runtime.md)
 
-The source links above open the current repository files. For offline use, download the current repository through GitHub's Code → Download ZIP. The [earlier report package](docs/downloads/CardMagic_Final_Delivery.zip) is retained as a historical report snapshot and contains older runtime files; do not use it to obtain the current code. Links open files; they do not start the machine.
+The source links above open the current repository files. For offline use, download the current repository through GitHub's Code → Download ZIP. Older packages are separated under [Historical resources](docs/history/README.md) and are excluded from current-code download instructions. Links open files; they do not start the machine.
 
 Arduino entry point: arduino/TwoDC/TwoDC.ino. Upload this sketch to Arduino Uno R3. It controls both DC motors through the L293D at 9600 baud. Motor 1 uses PWM D5 and direction D4/D3; motor 2 uses PWM D6 and direction D7/D8.
 
