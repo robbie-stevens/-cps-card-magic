@@ -1023,8 +1023,6 @@ The machine learning evaluation records test conditions, sample counts, predicti
 
 The Debug Log records symptoms, investigations, modifications and current status. It should distinguish code changes from physical verification, and resolved issues from remaining limitations.
 
-Further whole-machine test resources will include complete demonstration footage and feeding results, showing the process from shuffling, selection and cutting to recognition and revelation. Double feeds, jams and incomplete delivery should also be retained in the test records to explain the limits of system reliability.
-
 ### 9.5 File Organisation and Version Consistency
 
 For final submission, the README, source code, wiring instructions and test records should refer to the same operating version. Motor types, pins, communication parameters, feeding durations and final pulse counts should be consistent across these resources.
