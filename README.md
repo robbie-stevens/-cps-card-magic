@@ -449,21 +449,27 @@ L293D pins 3 and 6 connect to motor 1; pins 11 and 14 connect to motor 2. Pin 8 
 
 #### LCD Display Interface
 
-The LCD is the 16-column, 2-row display mounted in the white enclosure; it is separate from the L293D motor-driver chip. The same Uno runs the motors and the display using `LiquidCrystal lcd(12, 11, 9, 10, 13, 2)` in 4-bit mode.
+The 1602 LCD is the 16-column, 2-row display mounted in the white enclosure, separate from the L293D motor driver. The same Uno controls both motors and the display. The final wiring uses the 4-bit parallel interface configured by `LiquidCrystal lcd(12, 11, 9, 10, 13, 2)`.
 
-| 1602 LCD signal | Uno pin |
-| --- | --- |
-| RS | D12 |
-| E | D11 |
-| LCD D4 | D9 |
-| LCD D5 | D10 |
-| LCD D6 | D13 |
-| LCD D7 | D2 |
+| LCD pin | Signal | Connection |
+| --- | --- | --- |
+| 1 | VSS | Common GND |
+| 2 | VDD | 5V logic supply |
+| 3 | VO | Display contrast connection |
+| 4 | RS | Uno D12 |
+| 5 | RW | Common GND for write-only operation |
+| 6 | E | Uno D11 |
+| 7-10 | D0-D3 | Unconnected in 4-bit mode |
+| 11 | D4 | Uno D9 |
+| 12 | D5 | Uno D10 |
+| 13 | D6 | Uno D13 |
+| 14 | D7 | Uno D2 |
+| 15 | A | Backlight positive supply with appropriate current limiting |
+| 16 | K | Common GND |
 
-LCD D4-D7 are display data-signal names, not the Uno pin numbers. The display also requires its power, common-ground, contrast, RW and backlight connections; those are not defined by the constructor above. The signal table documents the final code, while the existing circuit figures show the dual-motor circuit rather than a complete LCD wiring schematic. Photograph P1 records the integrated display.
+LCD D4-D7 are the display's data-signal names, not the Uno pin numbers. The LCD and L293D share the Uno ground reference. VO sets display contrast; the backlight connections power the illumination independently of the six control/data signals. Photograph P1 shows the integrated physical display. Figures H3-H4 document the motor circuit; the table above specifies the LCD interface.
 
 When stopped, C displays “Enjoy the / magic trick”. S displays “shuffle”, D displays “Wizadry”, and final feeding completion displays “Your Card!” followed by “Thank you!” after five seconds. X displays “Stopped”.
-
 
 ### 3.3 Power Supply and Circuit Diagrams
 
