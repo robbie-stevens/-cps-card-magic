@@ -20,7 +20,7 @@
 - [Limitations](#7-limitations)
 - [Installation and operation](#8-software-installation-and-operation)
 
-> **Runtime update — 10 November 2026:** The linked Arduino, Processing and Wekinator files have been replaced with the supplied 1110ArduinoNew, sketch_1110Processing_New and 1110WekinatorNew snapshots. Use the [current runtime guide](docs/final-runtime.md). Use the linked source files or download the current main branch. Earlier packages are isolated in the historical archive and are not current runtime resources.
+> **Current runtime:** One Arduino Uno R3 controls the two DC motors and the 1602 LCD. Processing handles camera capture, Wekinator classification results, keyboard input and serial communication. Use the linked current source files or download the main branch, following the [runtime guide](docs/final-runtime.md). Earlier packages are isolated in the historical archive.
 
 ## 1 Project Overview
 
@@ -356,7 +356,7 @@ The raised pads establish gearbox height relative to the trays. Locators organis
 
 ![CM-20 electronics casing with interface apertures and internal supports](docs/images/full-machine/electronics-casing.png)
 
-Figure M9. Electronics casing, CM-20 (PDF page 9). The shell drawing shows the display aperture, rounded slot, internal partition and fixing posts. Its original LCD fit note records the drawing-stage status; the connected LCD is documented in physical photograph P1 and the current runtime.
+Figure M9. Electronics casing, CM-20 (PDF page 9). The shell drawing shows the display aperture, rounded slot, internal partition and fixing posts. The original “to be confirmed” LCD fit note is a drawing-stage annotation, not an outstanding documentation task. Physical photograph P1 shows the installed, connected display, whose operation is included in the current runtime.
 
 The shell measures 206.68 by 151.69 by 130.0 mm, with 1.8 mm walls and 44.5 mm upper-edge radii. Its 73.0 by 26.0 mm display opening has an 82.0 by 38.0 mm internal frame. An 85.85 by 35.0 mm rounded slot and two 10.0 mm holes complete the front-face openings. Physical photographs show how the camera and LCD were integrated; the CAD shell is a structural reference rather than a complete electronic assembly.
 
@@ -838,7 +838,7 @@ The classification evaluation contains 60 independent presentations, with 10 ord
 
 Motors were disabled during testing. The results do not include moving cards, double feeds, jams or timing errors between recognition and actuation, and therefore are not a whole-machine success rate.
 
-Likewise, an observed ordinary-card false-positive rate of 0% does not guarantee no false triggers in all settings. Separate complete-workflow tests should record correct reveals, classification errors, double feeds and jams to assess actual task reliability.
+Likewise, an observed ordinary-card false-positive rate of 0% does not guarantee no false triggers in all settings. This evaluation measures classifier performance only; it does not provide an end-to-end machine success rate incorporating card delivery, double feeds or jams.
 
 ### 7.7 Communication Protection Does Not Replace Physical Stopping
 
@@ -1007,7 +1007,7 @@ For an accepted marker event, Processing sends T once. Arduino does not count or
 
 Processing sends heartbeat H every 500 ms and Arduino replies PONG. Arduino stops after more than 3000 ms without contact. Processing requests a stop and reconnects after 2000 ms without valid replies; it also requests a stop if its main control loop is unresponsive for more than 2500 ms. Camera-frame loss alone does not stop the machine. These functions do not confirm physical card movement or replace the accessible power switch.
 
-The supplied Arduino sketch sends TARGET_PULSE 1/3, 2/3 and 3/3, followed by TARGET_DONE. The single Uno also controls the LCD: C displays “Enjoy the / magic trick”, S displays “shuffle”, D displays “Wizadry”, and completion displays “Your Card!” followed by “Thank you!” after 5 seconds. LCD signal pins are RS D12, E D11, D4 D9, D5 D10, D6 D13 and D7 D2. The source snapshots were uploaded without behavioural edits; repository sketch filenames are retained for existing links.
+The Arduino sketch sends TARGET_PULSE 1/3, 2/3 and 3/3, followed by TARGET_DONE. The single Uno also controls the LCD: C displays “Enjoy the / magic trick”, S displays “shuffle”, D displays “Wizadry”, and completion displays “Your Card!” followed by “Thank you!” after 5 seconds. LCD signal pins are RS D12, E D11, D4 D9, D5 D10, D6 D13 and D7 D2. 
 
 ### 9.3 Mechanical and Circuit Resources
 

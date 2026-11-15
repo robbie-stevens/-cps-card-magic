@@ -1,6 +1,6 @@
 # Mechanical design models
 
-Binary STL models use millimetres. These files reproduce the supplied model folder without geometry edits.
+The STL models use millimetres and describe the single-side gearbox components and left/right assemblies.
 
 ## Files
 

@@ -2,11 +2,11 @@
 
 ## Authoritative files
 
-- [Arduino source](../arduino/TwoDC/TwoDC.ino): supplied 1110ArduinoNew.ino, stored under the existing repository sketch name.
-- [Processing source](../processing/ExternalCamera_Control_v2/ExternalCamera_Control_v2.pde): supplied sketch_1110Processing_New.pde, stored under the existing repository sketch name.
-- [Wekinator project](../wekinator/WekinatorProject/WekinatorProject.wekproj): supplied 1110WekinatorNew/WekinatorProject, including all five project, configuration, training and model files.
+- [Arduino source](../arduino/TwoDC/TwoDC.ino): controls the two DC motors, feeding sequences, communication watchdog and 1602 LCD on the Uno R3.
+- [Processing source](../processing/ExternalCamera_Control_v2/ExternalCamera_Control_v2.pde): captures camera images, exchanges OSC data with Wekinator, filters predictions and manages keyboard and serial control.
+- [Wekinator project](../wekinator/WekinatorProject/WekinatorProject.wekproj): includes the project, configuration, training data and binary classification model.
 
-All seven supplied files are retained byte-for-byte. Download the current repository with Code → Download ZIP. Earlier packages are isolated under [Historical resources](history/README.md) and are not current runtime downloads.
+Download the current repository with Code → Download ZIP. Earlier packages are isolated under [Historical resources](history/README.md) and are not current runtime downloads.
 
 ## Startup
 
@@ -38,4 +38,4 @@ Motor 1: PWM D5, direction D4/D3. Motor 2: PWM D6, direction D7/D8. LCD: RS D12,
 
 Serial is 9600 baud. The serial worker sends H every 500 ms; Arduino replies PONG plus its current mode. Processing requests a stop and reconnects after 2 seconds without valid board replies. The board retains its 3-second contact watchdog. A main control-loop stall above 2.5 seconds also requests a stop. Restoring a connection requires confirmed STOPPED and a new S/D command. Software reconnection does not repair supply, driver, USB or wiring faults, and is not a physical emergency stop.
 
-Camera frames are sampled as 400 brightness values every 100 ms, sent to /wek/inputs on port 6448. Wekinator sends one classification output to localhost:12000 at /wek/outputs. Class 1 is ordinary cards; class 2 is the black marker. The supplied kNN model uses k=1. currentData.arff contains 5,005 training vectors (2,313 class 1 and 2,692 class 2); these are not independent evaluation trials.
+Camera frames are sampled as 400 brightness values every 100 ms, sent to /wek/inputs on port 6448. Wekinator sends one classification output to localhost:12000 at /wek/outputs. Class 1 is ordinary cards; class 2 is the black marker. The kNN model uses k=1. currentData.arff contains 5,005 training vectors (2,313 class 1 and 2,692 class 2); these are not independent evaluation trials.
